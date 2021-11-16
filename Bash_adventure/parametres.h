@@ -10,6 +10,16 @@ void* malloc_p(size_t s)
   return p;
 }
 
+typedef struct Monstre Monstre;
+struct Monstre{
+char nom[20];
+int PV;
+int PM;
+int XP;
+int Force;
+int VITESSE;
+};
+
 typedef struct Joueur Joueur;
 struct Joueur{
 char pseudo[20];
@@ -42,15 +52,6 @@ int time;
 int position[2];
 };
 
-typedef struct Monstre Monstre;
-struct Monstre{
-char nom[20];
-int PV;
-int PM;
-int XP;
-int Force;
-int VIT;
-};
 
 void initGame(Game **partie)
 {
@@ -171,5 +172,33 @@ void initJoueur(Joueur **p){
     }*/
     DistributeurCapa(p,choix);
 }
+
+void init_monstre(Monstre **self)
+{
+    srand(time(NULL));
+    int x;
+    char t[3]={'zombie' , 'slime', 'dragon'};
+    *self=malloc_p(sizeof(Monstre));
+    x=rand()%3;
+    if (strcmp(t[x],'zombie'))
+    {
+        (*self)->PV=100;
+        (*self)->PM=0;
+        (*self)->Force=5;
+    }
+    else if (strcmp(t[x],'slime'))
+    {
+        (*self)->PV=50;
+        (*self)->PM=10;
+        (*self)->Force=1;
+    }
+    else if (strcmp(t[x],'zombie'))
+    {
+        (*self)->PV=200;
+        (*self)->PM=100;
+        (*self)->Force=10;
+    }
+}
+
 
 #endif // PARAMETRES_H_INCLUDED
