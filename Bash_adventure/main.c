@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "parametres.h"
 
 int main()
 {
-    printf("Hello world!\n");
+    Game *partie;
+    initGame(&partie);
+
     return 0;
 }

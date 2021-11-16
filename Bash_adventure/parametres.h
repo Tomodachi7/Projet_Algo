@@ -1,5 +1,6 @@
 #ifndef PARAMETRES_H_INCLUDED
 #define PARAMETRES_H_INCLUDED
+#define DIM 101
 
 void* malloc_p(size_t s)
 {
@@ -27,7 +28,7 @@ int Archer[4];
 int Mage[4];
 int Chevalier[4];
 int Vanguard[4];
-}  
+}
 */
 
 
@@ -54,37 +55,70 @@ int VIT;
 void initGame(Game **partie)
 {
     Joueur *p;
+    char player='§';
     char **carte1;
     char **carte2;
     char **carte3;
-    int i;
+    int i,j;
 
     *partie=(Game*)malloc_p(sizeof(Game));
 
     p=(*partie)->player;
-    //initJoueur(&p); fonction à définir
-    
+    initJoueur(&p);
 
     (*partie)->time=300;
 
-    (*partie)->position={0,100};
+    (*partie)->position[0]=0;
+    (*partie)->position[1]=(DIM-1)/2;
 
     carte1=(*partie)->MAP1;
-    carte1=(char**)malloc_p(201*sizeof(char*));
+    carte1=(char**)malloc_p(DIM*sizeof(char*));
 
     carte2=(*partie)->MAP2;
-    cart2=(char**)malloc_p(201*sizeof(char*));
+    carte2=(char**)malloc_p(DIM*sizeof(char*));
 
     carte3=(*partie)->MAP3;
-    cart3=(char**)malloc_p(201*sizeof(char*));
+    carte3=(char**)malloc_p(DIM*sizeof(char*));
 
     for(i=0;i<201;i++){
-        carte1[i]=(char*)malloc_p(201*sizeof(char));
-        carte2[i]=(char*)malloc_p(201*sizeof(char));
-        carte3[i]=(char*)malloc_p(201*sizeof(char));
+        carte1[i]=(char*)malloc_p(DIM*sizeof(char));
+        carte2[i]=(char*)malloc_p(DIM*sizeof(char));
+        carte3[i]=(char*)malloc_p(DIM*sizeof(char));
     }
 
+    for(i=0;i<DIM;i++){
+        carte1[0][i]='-';
+        carte1[DIM-1][i]='-';
+        carte2[0][i]='-';
+        carte2[DIM-1][i]='-';
+        carte3[0][i]='-';
+        carte3[DIM-1][i]='-';
+    }
+    for(i=0;i<DIM;i++){
+        carte1[i][DIM-1]='|';
+        carte1[i][0]='|';
+        carte2[i][DIM-1]='|';
+        carte2[i][0]='|';
+        carte3[i][DIM-1]='|';
+        carte3[i][0]='|';
+    }
+    carte1[(*partie)->position[0]][(*partie)->position[1]]=player;
+
+    affichage(carte1);
 }
+
+void affichage(char **carte)
+{
+    int i,j;
+
+    for(i=0;i<DIM;i++){
+        for(j=0;j<DIM;j++){
+            printf("%c",carte[i][j]);
+        }
+        printf("\n");
+    }
+}
+
 DistributeurCapa(Joueur **p,int val){
   if(val==1){
     (*p)->PV=10;
@@ -113,29 +147,29 @@ DistributeurCapa(Joueur **p,int val){
 }
 
 void initJoueur(Joueur **p){
-    *joueur=(Joueur*)malloc_p(sizeof(Joueur));
+    *p=(Joueur*)malloc_p(sizeof(Joueur));
     int choix=0;
-    printf("Saisir votre pseudo de joueur\n);
+    printf("Saisir votre pseudo de joueur\n");
     fgets((*p)->pseudo,20,stdin);
     printf("Choisissez votre classe parmi celles-ci\n");
-    printf("1.Archer"); 
-    printf("2.Mage"); 
-    printf("3.Chevalier"); 
-    printf("4.Vanguard");
+    printf("1.Archer\n");
+    printf("2.Mage\n");
+    printf("3.Chevalier\n");
+    printf("4.Vanguard\n");
     scanf("%d",&choix);
-    if(choix==1){
-      strcpy(classe,{'A','r','c','h','e','r'});
+    /*if(choix==1){
+        (*p)->classe={'A','r','c','h','e','r'};
     }
     if(choix==2){
-      strcpy(classe,{'M','a','g','e'});
+      strcpy((*p)->classe,{'M','a','g','e'});
     }
     if(choix==3){
-      strcpy(classe,{'C','h','e','v','a','l','i','e','r'});
+      strcpy((*p)->classe,{'C','h','e','v','a','l','i','e','r'});
     }
     if(choix==4){
-      strcpy(classe,{'V','a','n','g','u','a','r','d'});
-    }       
-    DistributeurCapa(p,choix); 
+      strcpy((*p)->classe,{'V','a','n','g','u','a','r','d'});
+    }*/
+    DistributeurCapa(p,choix);
 }
 
 #endif // PARAMETRES_H_INCLUDED

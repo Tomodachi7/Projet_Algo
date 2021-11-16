@@ -1,5 +1,8 @@
 # depslib dependency file v1.0
-1584205420 source:d:\users\ludovic\documents\github\projet_algo\bash_adventure\main.c
+1637100286 source:d:\users\ludovic\documents\github\projet_algo\bash_adventure\main.c
 	<stdio.h>
 	<stdlib.h>
+	"parametres.h"
+
+1637101518 d:\users\ludovic\documents\github\projet_algo\bash_adventure\parametres.h
 
