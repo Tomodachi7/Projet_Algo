@@ -1,6 +1,7 @@
 #ifndef PARAMETRES_H_INCLUDED
 #define PARAMETRES_H_INCLUDED
-#define DIM 19
+#define DIMX 62
+#define DIMY 31
 
 void* malloc_p(size_t s)
 {
@@ -45,9 +46,9 @@ int Vanguard[4];
 typedef struct Game Game;
 struct Game{
 Joueur *player;
-int **map1[DIM];
-int **map2[DIM];
-int **map3[DIM];
+int **map1[DIMY];
+int **map2[DIMY];
+int **map3[DIMY];
 int time;
 int position[2];
 };
@@ -66,58 +67,64 @@ void initGame(Game **partie)
 
     (*partie)->time=300;
 
-    (*partie)->position[0]=0;
-    (*partie)->position[1]=(DIM-1)/2;
+    j=0;
+    i=(DIMY-1)/2;
+
+    (*partie)->position[0]=i;
+    (*partie)->position[1]=j;
 
     Creation_map((*partie)->map1);
     Creation_map((*partie)->map2);
     Creation_map((*partie)->map3);
 
-    ///Murs Horizontales
-    for(i=0;i<DIM;i++){
-        (*partie)->map1[0][i]=45;
-        (*partie)->map1[DIM-1][i]=45;
-
-        (*partie)->map2[0][i]=45;
-        (*partie)->map2[DIM-1][i]=45;
-
-        (*partie)->map3[0][i]=45;
-        (*partie)->map3[DIM-1][i]=45;
-    }
-    ///Murs verticales
-    for(i=1;i<DIM-2;i++){
-        (*partie)->map1[i][DIM-1]=124;
-        (*partie)->map1[i][0]=124;
-
-        (*partie)->map2[i][DIM-1]=124;
-        (*partie)->map2[i][0]=124;
-
-        (*partie)->map3[i][DIM-1]=124;
-        (*partie)->map3[i][0]=124;
-    }
+    ///initialisation de la carte
+    initCarte((*partie)->map1);
 
     ///placement du joueur
-    (*partie)->map1[(*partie)->position[1]][(*partie)->position[0]]=player;
+    (*partie)->map1[i][j]=player;
 
     affichage((*partie)->map1);
 }
 
-void Creation_map(int **carte[DIM])
+void Creation_map(int **carte)
 {
     int i;
 
-    for(i=0;i<DIM;i++){
-        carte[i]=(int*)malloc_p(DIM*sizeof(int));
+    for(i=0;i<DIMY;i++){
+        carte[i]=(int*)malloc_p(DIMX*sizeof(int));
     }
 
+}
+
+void initCarte(int **carte)
+{
+    int i,j;
+
+    for(i=0;i<DIMY;i++){
+        for(j=0;j<DIMX;j++){
+            carte[i][j]=0;
+        }
+    }
+
+
+    ///Murs Horizontales
+    for(i=0;i<DIMX;i++){
+        carte[0][i]=45;
+        carte[DIMY-1][i]=45;
+    }
+    ///Murs verticales
+    for(i=1;i<DIMY-1;i++){
+        carte[i][DIMX-1]=124;
+        carte[i][0]=124;
+    }
 }
 
 void affichage(int **carte)
 {
     int i,j;
 
-    for(i=0;i<DIM;i++){
-        for(j=0;j<DIM;j++){
+    for(i=0;i<DIMY;i++){
+        for(j=0;j<DIMX;j++){
             printf("%c",carte[i][j]);
         }
         printf("\n");
@@ -162,11 +169,12 @@ void initJoueur(Joueur **p){
     printf("3.Chevalier\n");
     printf("4.Vanguard\n");
     scanf("%d",&choix);
+    ///on voudrait affecter une chaîne de caractères à une autre mais on se trompe à chaque fois sur la syntaxe
     /*if(choix==1){
         (*p)->classe={'A','r','c','h','e','r'};
     }
     if(choix==2){
-      strcpy((*p)->classe,{'M','a','g','e'});
+      strcpy((*p)->classue,{'M','a','g','e'});
     }
     if(choix==3){
       strcpy((*p)->classe,{'C','h','e','v','a','l','i','e','r'});
