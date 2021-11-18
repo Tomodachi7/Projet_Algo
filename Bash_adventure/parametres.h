@@ -212,5 +212,44 @@ void init_monstre(Monstre **self)
     }
 }
 
+/*void deplament_monstre(Game **partie,Monstre **monstre)
+{
+    srand( time( NULL ) );
+    int i=rand()%4;
+    if(i==0){
+            if(x+1<DIMX-1){
+                carte[x+1][y]=monstre;
+                carte[x][y]=0;
+                delay(3); ///rechercher comment delay le temps
+            }
+        }
+    if(i==1)
+        {
+            if(y+1<DIMY-1)
+            {
+                carte[x][y+1]=monstre;
+                carte[x][y]=0;
+                delay(3);
+            }
+        }
+    if(i==2)
+        {
+            if(x-1>0)
+            {
+                carte[x-1][y]=monstre;
+                carte[x][y]=0;
+                delay(3);
+            }
+        }
+    if(i==3)
+        {
+            if(y-1>0)
+            {
+                carte[x][y-1]=monstre;
+                carte[x][y]=0;
+                delay(3);
+            }
+        }
+}*/
 
 #endif // PARAMETRES_H_INCLUDED
