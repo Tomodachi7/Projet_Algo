@@ -1,6 +1,6 @@
 #ifndef PARAMETRES_H_INCLUDED
 #define PARAMETRES_H_INCLUDED
-#define DIM 101
+#define DIM 19
 
 void* malloc_p(size_t s)
 {
@@ -45,9 +45,9 @@ int Vanguard[4];
 typedef struct Game Game;
 struct Game{
 Joueur *player;
-char **MAP1;
-char **MAP2;
-char **MAP3;
+int **map1[DIM];
+int **map2[DIM];
+int **map3[DIM];
 int time;
 int position[2];
 };
@@ -56,10 +56,7 @@ int position[2];
 void initGame(Game **partie)
 {
     Joueur *p;
-    char player='§';
-    char **carte1;
-    char **carte2;
-    char **carte3;
+    char player=42;
     int i,j;
 
     *partie=(Game*)malloc_p(sizeof(Game));
@@ -72,43 +69,50 @@ void initGame(Game **partie)
     (*partie)->position[0]=0;
     (*partie)->position[1]=(DIM-1)/2;
 
-    carte1=(*partie)->MAP1;
-    carte1=(char**)malloc_p(DIM*sizeof(char*));
+    Creation_map((*partie)->map1);
+    Creation_map((*partie)->map2);
+    Creation_map((*partie)->map3);
 
-    carte2=(*partie)->MAP2;
-    carte2=(char**)malloc_p(DIM*sizeof(char*));
-
-    carte3=(*partie)->MAP3;
-    carte3=(char**)malloc_p(DIM*sizeof(char*));
-
-    for(i=0;i<201;i++){
-        carte1[i]=(char*)malloc_p(DIM*sizeof(char));
-        carte2[i]=(char*)malloc_p(DIM*sizeof(char));
-        carte3[i]=(char*)malloc_p(DIM*sizeof(char));
-    }
-
+    ///Murs Horizontales
     for(i=0;i<DIM;i++){
-        carte1[0][i]='-';
-        carte1[DIM-1][i]='-';
-        carte2[0][i]='-';
-        carte2[DIM-1][i]='-';
-        carte3[0][i]='-';
-        carte3[DIM-1][i]='-';
-    }
-    for(i=0;i<DIM;i++){
-        carte1[i][DIM-1]='|';
-        carte1[i][0]='|';
-        carte2[i][DIM-1]='|';
-        carte2[i][0]='|';
-        carte3[i][DIM-1]='|';
-        carte3[i][0]='|';
-    }
-    carte1[(*partie)->position[0]][(*partie)->position[1]]=player;
+        (*partie)->map1[0][i]=45;
+        (*partie)->map1[DIM-1][i]=45;
 
-    affichage(carte1);
+        (*partie)->map2[0][i]=45;
+        (*partie)->map2[DIM-1][i]=45;
+
+        (*partie)->map3[0][i]=45;
+        (*partie)->map3[DIM-1][i]=45;
+    }
+    ///Murs verticales
+    for(i=1;i<DIM-2;i++){
+        (*partie)->map1[i][DIM-1]=124;
+        (*partie)->map1[i][0]=124;
+
+        (*partie)->map2[i][DIM-1]=124;
+        (*partie)->map2[i][0]=124;
+
+        (*partie)->map3[i][DIM-1]=124;
+        (*partie)->map3[i][0]=124;
+    }
+
+    ///placement du joueur
+    (*partie)->map1[(*partie)->position[1]][(*partie)->position[0]]=player;
+
+    affichage((*partie)->map1);
 }
 
-void affichage(char **carte)
+void Creation_map(int **carte[DIM])
+{
+    int i;
+
+    for(i=0;i<DIM;i++){
+        carte[i]=(int*)malloc_p(DIM*sizeof(int));
+    }
+
+}
+
+void affichage(int **carte)
 {
     int i,j;
 
