@@ -13,12 +13,14 @@ void* malloc_p(size_t s)
 
 typedef struct Monstre Monstre;
 struct Monstre{
+int represention;
 char nom[20];
 int PV;
 int PM;
 int XP;
-int Force;
-int VITESSE;
+int ATK;
+int VIT;
+int position[2];
 };
 
 typedef struct Joueur Joueur;
@@ -26,9 +28,10 @@ struct Joueur{
 char pseudo[20];
 char classe[20];
 int PV;
+int DEF;
 int PM;
 int XP;
-int Force;
+int ATK;
 int VIT;
 };
 
@@ -136,25 +139,25 @@ DistributeurCapa(Joueur **p,int val){
     (*p)->PV=10;
     (*p)->PM=0;
     (*p)->XP=0;
-    (*p)->Force=3;
+    (*p)->ATK=3;
   }
   if(val==2){
     (*p)->PV=6;
     (*p)->PM=6;
     (*p)->XP=0;
-    (*p)->Force=2;
+    (*p)->ATK=2;
   }
   if(val==3){
     (*p)->PV=5;
     (*p)->PM=0;
     (*p)->XP=0;
-    (*p)->Force=3;
+    (*p)->ATK=3;
   }
   if(val==4){
     (*p)->PV=15;
     (*p)->PM=0;
     (*p)->XP=0;
-    (*p)->Force=8;
+    (*p)->ATK=8;
   }
 }
 
@@ -188,68 +191,124 @@ void initJoueur(Joueur **p){
 void init_monstre(Monstre **self)
 {
     srand(time(NULL));
-    int x;
+    int x,i,j;
     char t[3]={'zombie' , 'slime', 'dragon'};
+
     *self=malloc_p(sizeof(Monstre));
+
     x=rand()%3;
+    i=rand()%(DIMX-1)+1;
+    j=rand()%(DIMY-1)+1;
+
     if (strcmp(t[x],'zombie'))
     {
+        (*self)->represention=35;
         (*self)->PV=100;
         (*self)->PM=0;
-        (*self)->Force=5;
+        (*self)->ATK=5;
     }
     else if (strcmp(t[x],'slime'))
     {
+        (*self)->represention=35;
         (*self)->PV=50;
         (*self)->PM=10;
-        (*self)->Force=1;
+        (*self)->ATK=1;
     }
     else if (strcmp(t[x],'zombie'))
     {
+        (*self)->represention=35;
         (*self)->PV=200;
         (*self)->PM=100;
-        (*self)->Force=10;
+        (*self)->ATK=10;
     }
+
+    (*self)->position[0]=i;
+    (*self)->position[1]=j;
 }
 
-/*void deplament_monstre(Game **partie,Monstre **monstre)
+void deplament_monstre(int **carte,Monstre *monstre)
 {
     srand( time( NULL ) );
-    int i=rand()%4;
+
+    int i,x,y;
+
+    x=monstre->position[0];
+    y=monstre->position[1];
+
+    i=rand()%4;
+
     if(i==0){
-            if(x+1<DIMX-1){
-                carte[x+1][y]=monstre;
+            if((x+1<DIMX-1) && (carte[x+1][y]==58)){
+                carte[x+1][y]=monstre->represention;
                 carte[x][y]=0;
-                delay(3); ///rechercher comment delay le temps
+                //delay(3); ///rechercher comment delay le temps
             }
         }
     if(i==1)
         {
-            if(y+1<DIMY-1)
+            if((y+1<DIMY-1) && (carte[x][y+1]==58))
             {
-                carte[x][y+1]=monstre;
+                carte[x][y+1]=monstre->represention;
                 carte[x][y]=0;
-                delay(3);
+                //delay(3);
             }
         }
     if(i==2)
         {
-            if(x-1>0)
+            if((x-1>0) && (carte[x-1][y]==58))
             {
-                carte[x-1][y]=monstre;
+                carte[x-1][y]=monstre->represention;
                 carte[x][y]=0;
-                delay(3);
+                //delay(3);
             }
         }
-    if(i==3)
+    if((i==3) && (carte[x][y-1]==58))
         {
             if(y-1>0)
             {
-                carte[x][y-1]=monstre;
+                carte[x][y-1]=monstre->represention;
                 carte[x][y]=0;
-                delay(3);
+                //delay(3);
             }
         }
-}*/
+}
+
+void Combat(Joueur *player,Monstre *ennemi)
+{
+    int choix;
+
+    printf("Vous êtes en combat, il est l'heure de montrer ce que vous savez faire !\n\n");
+
+
+    while((player->PV!=0)||(ennemi->PV!=0)){
+
+        printf("Faites votre choix:\n");
+        printf("1.Attaquer\n");
+        printf("2.Defense\n");
+        printf("3.Inventaire\n");
+        printf("4.Fuir\n\n");
+
+        scanf("%d",&choix);
+
+        switch(choix)
+        {
+            case 1:
+                printf("fqfqfqfq");
+                break;
+            case 2:
+                printf("fqfqfqfq");
+                break;
+            case 3:
+                printf("fqfqfqfq");
+                break;
+            case 4:
+                printf("Vous êtes un gros lache, honte a vous !\n");
+                return 0;
+                break;
+
+        }
+    }
+}
+///Trouver une façon de fliger la map derrière
 
 #endif // PARAMETRES_H_INCLUDED
