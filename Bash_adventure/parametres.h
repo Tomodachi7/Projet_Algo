@@ -172,7 +172,7 @@ void initJoueur(Joueur **p){
     printf("3.Chevalier\n");
     printf("4.Vanguard\n");
     scanf("%d",&choix);
-    ///on voudrait affecter une chaÓne de caractËres ‡ une autre mais on se trompe ‡ chaque fois sur la syntaxe
+    ///on voudrait affecter une cha√Æne de caract√®res √† une autre mais on se trompe √† chaque fois sur la syntaxe
     /*if(choix==1){
         (*p)->classe={'A','r','c','h','e','r'};
     }
@@ -277,7 +277,7 @@ void Combat(Joueur *player,Monstre *ennemi)
 {
     int choix;
 
-    printf("Vous Ítes en combat, il est l'heure de montrer ce que vous savez faire !\n\n");
+    printf("Vous √™tes en combat, il est l'heure de montrer ce que vous savez faire !\n\n");
 
 
     while((player->PV!=0)||(ennemi->PV!=0)){
@@ -293,22 +293,24 @@ void Combat(Joueur *player,Monstre *ennemi)
         switch(choix)
         {
             case 1:
-                printf("fqfqfqfq");
+                printf("Quelle type d'attaque voulez vous utiliser");
+                printf("Attaque physique");
+                printf("Attaque magique");
                 break;
             case 2:
-                printf("fqfqfqfq");
+                printf("Vous avez d√©cid√© de d√©fendre");
                 break;
             case 3:
-                printf("fqfqfqfq");
+                printf("Ouverture inventaire");
                 break;
             case 4:
-                printf("Vous Ítes un gros lache, honte a vous !\n");
+                printf("Vous √™tes un gros lache, honte a vous !\n");
                 return 0;
                 break;
 
         }
     }
 }
-///Trouver une faÁon de fliger la map derriËre
+///Trouver une fa√ßon de fliger la map derri√®re
 
 #endif // PARAMETRES_H_INCLUDED
