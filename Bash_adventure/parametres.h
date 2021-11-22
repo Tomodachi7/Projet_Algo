@@ -30,6 +30,7 @@ char classe[20];
 int PV;
 int DEF;
 int PM;
+int LVL;
 int XP;
 int ATK;
 int VIT;
@@ -134,30 +135,39 @@ void affichage(int **carte)
     }
 }
 
-DistributeurCapa(Joueur **p,int val){
+void DistributeurCapa(Joueur **p,int val)
+{
   if(val==1){
-    (*p)->PV=10;
+    (*p)->LVL=1;
+    (*p)->PV=100;
     (*p)->PM=0;
+    (*p)->DEF=20;
     (*p)->XP=0;
-    (*p)->ATK=3;
+    (*p)->ATK=40;
   }
   if(val==2){
-    (*p)->PV=6;
+    (*p)->LVL=1;
+    (*p)->PV=100;
     (*p)->PM=6;
+    (*p)->DEF=10;
     (*p)->XP=0;
-    (*p)->ATK=2;
+    (*p)->ATK=10;
   }
   if(val==3){
+    (*p)->LVL=150;
     (*p)->PV=5;
     (*p)->PM=0;
+    (*p)->DEF=40;
     (*p)->XP=0;
-    (*p)->ATK=3;
+    (*p)->ATK=30;
   }
   if(val==4){
-    (*p)->PV=15;
+    (*p)->LVL=1;
+    (*p)->PV=200;
     (*p)->PM=0;
+    (*p)->DEF=55;
     (*p)->XP=0;
-    (*p)->ATK=8;
+    (*p)->ATK=20;
   }
 }
 
@@ -173,18 +183,18 @@ void initJoueur(Joueur **p){
     printf("4.Vanguard\n");
     scanf("%d",&choix);
     ///on voudrait affecter une chaîne de caractères à une autre mais on se trompe à chaque fois sur la syntaxe
-    /*if(choix==1){
-        (*p)->classe={'A','r','c','h','e','r'};
+    if(choix==1){
+        strcpy((*p)->classe,"Archer");
     }
     if(choix==2){
-      strcpy((*p)->classue,{'M','a','g','e'});
+      strcpy((*p)->classe,"Caster");
     }
     if(choix==3){
-      strcpy((*p)->classe,{'C','h','e','v','a','l','i','e','r'});
+      strcpy((*p)->classe,"Knight");
     }
     if(choix==4){
-      strcpy((*p)->classe,{'V','a','n','g','u','a','r','d'});
-    }*/
+      strcpy((*p)->classe,"Vanguard");
+    }
     DistributeurCapa(p,choix);
 }
 
