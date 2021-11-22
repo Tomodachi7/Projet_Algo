@@ -293,9 +293,9 @@ void Combat(Joueur *player,Monstre *ennemi)
         switch(choix)
         {
             case 1:
-                printf("Quelle type d'attaque voulez vous utiliser");
-                printf("Attaque physique");
-                printf("Attaque magique");
+                printf("Quelle type d'attaque voulez vous utiliser\n");
+                printf("Attaque physique\n");
+                printf("Attaque magique\n");
                 break;
             case 2:
                 printf("Vous avez décidé de défendre");
