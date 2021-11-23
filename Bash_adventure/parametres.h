@@ -15,6 +15,7 @@ typedef struct Joueur Joueur;
 struct Joueur{
 char pseudo[20];
 char classe[20];
+int prec;
 int PV;
 int DEF;
 int PM;
@@ -22,6 +23,7 @@ int LVL;
 int XP;
 int ATK;
 int VIT;
+int position[2];
 };
 
 typedef struct Game Game;
@@ -31,12 +33,13 @@ int **map1[DIMY];
 int **map2[DIMY];
 int **map3[DIMY];
 int time;
-int position[2];
+
 };
 
 typedef struct Monstre Monstre;
 struct Monstre{
 int represention;
+int prec;
 char nom[20];
 int PV;
 int PM;
@@ -62,8 +65,8 @@ void initGame(Game **partie)
     j=0;
     i=(DIMY-1)/2;
 
-    (*partie)->position[0]=i;
-    (*partie)->position[1]=j;
+    p->position[0]=i;
+    p->position[1]=j;
 
     Creation_map((*partie)->map1);
     Creation_map((*partie)->map2);
@@ -273,40 +276,36 @@ void deplament_monstre(int **carte,Monstre *monstre)
 
     if(i==0){
             if((x+1<DIMX-1) && (carte[x+1][y]!=35)){
-                prec=carte[x][y];
+                carte[x][y]=monstre->prec;
+                monstre->prec=carte[x+1][y];
                 carte[x+1][y]=monstre->represention;
-                carte[x][y]=prec;
-                //delay(3); ///rechercher comment delay le temps
             }
         }
     if(i==1)
         {
             if((y+1<DIMY-1) && (carte[x][y+1]!=35))
             {
-                prec=carte[x][y];
+                carte[x][y]=monstre->prec;
+                monstre->prec=carte[x][y+1];
                 carte[x][y+1]=monstre->represention;
-                carte[x][y]=prec;
-                //delay(3);
             }
         }
     if(i==2)
         {
             if((x-1>0) && (carte[x-1][y]!=35))
             {
-                prec=carte[x][y];
+                carte[x][y]=monstre->prec;
+                monstre->prec=carte[x-1][y];
                 carte[x-1][y]=monstre->represention;
-                carte[x][y]=prec;
-                //delay(3);
             }
         }
     if((i==3) && (carte[x][y-1]!=35))
         {
             if(y-1>0)
             {
-                prec=carte[x][y];
+                carte[x][y]=monstre->prec;
+                monstre->prec=carte[x][y-1];
                 carte[x][y-1]=monstre->represention;
-                carte[x][y]=prec;
-                //delay(3);
             }
         }
 }
@@ -350,5 +349,32 @@ void Combat(Joueur *player,Monstre *ennemi)
     }
 }
 
+void DeplacementJoueur(Joueur *p,int **carte)
+{
+    int touche,prec,x,y;
+
+    scanf("%d",&touche);
+
+    x=p->position[0];
+    y=p->position[1];
+
+    if((touche==122) && (carte[x+1][y]!=35) && (y+1<DIMY-1)){
+        carte[x][y]=p->prec;
+        p->prec=carte[x][y+1];
+        carte[x][y+1]=42;
+
+    }
+}
+void Jeu(Game *p)
+{
+  int continuer;
+
+  continuer=1;
+
+  while(continuer==1){
+
+  }
+
+}
 
 #endif // PARAMETRES_H_INCLUDED
