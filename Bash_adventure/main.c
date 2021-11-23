@@ -7,8 +7,8 @@ int main()
 {
     int choix;
     Game *partie;
-    printf("bash adventure\n\n bienvenue\n\n");
-
+    //printf("bash adventure\n\n bienvenue\n\n");
+    Menu();
     printf("--Menu--\n");
     printf("1-Jouer\n");
     printf("2-Charger une sauvegarde\n");
@@ -20,7 +20,7 @@ int main()
     {
     case 1:
         initGame(&partie);
-
+        Jeu(partie);
         break;
     case 2:
         //fonction charger supp sauvegarde
