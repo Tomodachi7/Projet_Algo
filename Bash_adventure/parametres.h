@@ -272,7 +272,7 @@ void deplament_monstre(int **carte,Monstre *monstre)
     i=rand()%4;
 
     if(i==0){
-            if((x+1<DIMX-1) && (carte[x+1][y]==58)){
+            if((x+1<DIMX-1) && (carte[x+1][y]!=35)){
                 prec=carte[x][y];
                 carte[x+1][y]=monstre->represention;
                 carte[x][y]=prec;
@@ -281,7 +281,7 @@ void deplament_monstre(int **carte,Monstre *monstre)
         }
     if(i==1)
         {
-            if((y+1<DIMY-1) && (carte[x][y+1]==58))
+            if((y+1<DIMY-1) && (carte[x][y+1]!=35))
             {
                 prec=carte[x][y];
                 carte[x][y+1]=monstre->represention;
@@ -291,7 +291,7 @@ void deplament_monstre(int **carte,Monstre *monstre)
         }
     if(i==2)
         {
-            if((x-1>0) && (carte[x-1][y]==58))
+            if((x-1>0) && (carte[x-1][y]!=35))
             {
                 prec=carte[x][y];
                 carte[x-1][y]=monstre->represention;
@@ -299,7 +299,7 @@ void deplament_monstre(int **carte,Monstre *monstre)
                 //delay(3);
             }
         }
-    if((i==3) && (carte[x][y-1]==58))
+    if((i==3) && (carte[x][y-1]!=35))
         {
             if(y-1>0)
             {
