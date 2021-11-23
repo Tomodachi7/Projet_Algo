@@ -20,6 +20,7 @@ int main()
     {
     case 1:
         initGame(&partie);
+
         break;
     case 2:
         //fonction charger supp sauvegarde

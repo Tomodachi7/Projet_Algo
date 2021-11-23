@@ -202,11 +202,12 @@ void initJoueur(Joueur **p){
     DistributeurCapa(p,choix);
 }
 
-void init_monstre(Monstre **self)
+void init_monstre(Monstre **self,int nv_map)
 {
     srand(time(NULL));
 
-    int x,i,j;
+    int x,i,j,PV,XP,ATK;
+
     char t[3]={'zombie' , 'slime', 'dragon'};
 
     *self=malloc_p(sizeof(Monstre));
@@ -215,26 +216,44 @@ void init_monstre(Monstre **self)
     i=rand()%(DIMX-1)+1;
     j=rand()%(DIMY-1)+1;
 
+    if(nv_map==1){
+        PV=0;
+        ATK=1;
+        XP=50;
+    }
+
+    if(nv_map==2){
+        PV=40;
+        ATK=2;
+        XP=33;
+    }
+
+    if(nv_map==3){
+        PV=80;
+        ATK=3;
+        XP=25;
+    }
+
     if (strcmp(t[x],'zombie'))
     {
         (*self)->represention=35;
-        (*self)->PV=100;
-        (*self)->PM=0;
-        (*self)->ATK=5;
+        (*self)->PV=100+PV;
+        (*self)->XP=XP;
+        (*self)->ATK=7*ATK;
     }
-    else if (strcmp(t[x],'slime'))
+    if (strcmp(t[x],'slime'))
     {
         (*self)->represention=35;
         (*self)->PV=50;
-        (*self)->PM=10;
-        (*self)->ATK=1;
+        (*self)->XP=XP;
+        (*self)->ATK=1*ATK;
     }
-    else if (strcmp(t[x],'zombie'))
+    if (strcmp(t[x],'zombie'))
     {
         (*self)->represention=35;
-        (*self)->PV=200;
-        (*self)->PM=100;
-        (*self)->ATK=10;
+        (*self)->PV=200+PV;
+        (*self)->XP=XP;
+        (*self)->ATK=10*ATK;
     }
 
     (*self)->position[0]=i;
@@ -245,7 +264,7 @@ void deplament_monstre(int **carte,Monstre *monstre)
 {
     srand( time( NULL ) );
 
-    int i,x,y;
+    int i,x,y,prec;
 
     x=monstre->position[0];
     y=monstre->position[1];
@@ -254,8 +273,9 @@ void deplament_monstre(int **carte,Monstre *monstre)
 
     if(i==0){
             if((x+1<DIMX-1) && (carte[x+1][y]==58)){
+                prec=carte[x][y];
                 carte[x+1][y]=monstre->represention;
-                carte[x][y]=0;
+                carte[x][y]=prec;
                 //delay(3); ///rechercher comment delay le temps
             }
         }
@@ -263,8 +283,9 @@ void deplament_monstre(int **carte,Monstre *monstre)
         {
             if((y+1<DIMY-1) && (carte[x][y+1]==58))
             {
+                prec=carte[x][y];
                 carte[x][y+1]=monstre->represention;
-                carte[x][y]=0;
+                carte[x][y]=prec;
                 //delay(3);
             }
         }
@@ -272,8 +293,9 @@ void deplament_monstre(int **carte,Monstre *monstre)
         {
             if((x-1>0) && (carte[x-1][y]==58))
             {
+                prec=carte[x][y];
                 carte[x-1][y]=monstre->represention;
-                carte[x][y]=0;
+                carte[x][y]=prec;
                 //delay(3);
             }
         }
@@ -281,8 +303,9 @@ void deplament_monstre(int **carte,Monstre *monstre)
         {
             if(y-1>0)
             {
+                prec=carte[x][y];
                 carte[x][y-1]=monstre->represention;
-                carte[x][y]=0;
+                carte[x][y]=prec;
                 //delay(3);
             }
         }
@@ -326,6 +349,6 @@ void Combat(Joueur *player,Monstre *ennemi)
         }
     }
 }
-///Trouver une façon de fliger la map derrière
+
 
 #endif // PARAMETRES_H_INCLUDED
