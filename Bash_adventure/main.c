@@ -9,13 +9,13 @@ int main()
     Game *partie;
     printf("bash adventure\n\n bienvenue\n\n");
 
-    printf("--menu--\n");
-    printf("1-jouer\n");
-    printf("2charger une sauvegarde\n");
-    printf("3-supprimer une sauvegarde\n");
-    printf("4-quitter\n");
+    printf("--Menu--\n");
+    printf("1-Jouer\n");
+    printf("2-Charger une sauvegarde\n");
+    printf("3-Supprimer une sauvegarde\n");
+    printf("4-Quitter\n");
     scanf("%d",&choix);
-    system("cls");
+    //system("cls");
     switch(choix)
     {
     case 1:

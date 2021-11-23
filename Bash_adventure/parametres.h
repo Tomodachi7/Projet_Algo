@@ -11,18 +11,6 @@ void* malloc_p(size_t s)
   return p;
 }
 
-typedef struct Monstre Monstre;
-struct Monstre{
-int represention;
-char nom[20];
-int PV;
-int PM;
-int XP;
-int ATK;
-int VIT;
-int position[2];
-};
-
 typedef struct Joueur Joueur;
 struct Joueur{
 char pseudo[20];
@@ -36,17 +24,6 @@ int ATK;
 int VIT;
 };
 
-/*
-typedef struct Classe Classe;
-struct Classe{
-int Archer[4];
-int Mage[4];
-int Chevalier[4];
-int Vanguard[4];
-}
-*/
-
-
 typedef struct Game Game;
 struct Game{
 Joueur *player;
@@ -57,6 +34,17 @@ int time;
 int position[2];
 };
 
+typedef struct Monstre Monstre;
+struct Monstre{
+int represention;
+char nom[20];
+int PV;
+int PM;
+int XP;
+int ATK;
+int VIT;
+int position[2];
+};
 
 void initGame(Game **partie)
 {
@@ -69,7 +57,7 @@ void initGame(Game **partie)
     p=(*partie)->player;
     initJoueur(&p);
 
-    (*partie)->time=300;
+    (*partie)->time=0;
 
     j=0;
     i=(DIMY-1)/2;
@@ -102,14 +90,15 @@ void Creation_map(int **carte)
 
 void initCarte(int **carte)
 {
-    int i,j;
+    srand(time(NULL));
+
+    int i,j,x,y;
 
     for(i=0;i<DIMY;i++){
         for(j=0;j<DIMX;j++){
             carte[i][j]=0;
         }
     }
-
 
     ///Murs Horizontales
     for(i=0;i<DIMX;i++){
@@ -121,6 +110,15 @@ void initCarte(int **carte)
         carte[i][DIMX-1]=124;
         carte[i][0]=124;
     }
+
+
+    for(i=0;i<10;i++){
+        x=rand() % (DIMX-2 - 2 + 1) + 2;
+        y=rand() % (DIMY-2 - 2 + 1) + 2;
+        carte[x][y]=35;
+    }
+
+
 }
 
 void affichage(int **carte)
@@ -173,16 +171,20 @@ void DistributeurCapa(Joueur **p,int val)
 
 void initJoueur(Joueur **p){
     *p=(Joueur*)malloc_p(sizeof(Joueur));
-    int choix=0;
+
+    int choix;
+
     printf("Saisir votre pseudo de joueur\n");
     fgets((*p)->pseudo,20,stdin);
+
     printf("Choisissez votre classe parmi celles-ci\n");
     printf("1.Archer\n");
     printf("2.Mage\n");
     printf("3.Chevalier\n");
     printf("4.Vanguard\n");
+
     scanf("%d",&choix);
-    ///on voudrait affecter une chaîne de caractères à une autre mais on se trompe à chaque fois sur la syntaxe
+
     if(choix==1){
         strcpy((*p)->classe,"Archer");
     }
@@ -195,12 +197,14 @@ void initJoueur(Joueur **p){
     if(choix==4){
       strcpy((*p)->classe,"Vanguard");
     }
+
     DistributeurCapa(p,choix);
 }
 
 void init_monstre(Monstre **self)
 {
     srand(time(NULL));
+
     int x,i,j;
     char t[3]={'zombie' , 'slime', 'dragon'};
 
