@@ -110,7 +110,7 @@ void initCarte(int **carte)
 
     for(i=0;i<DIMY;i++){
         for(j=0;j<DIMX;j++){
-            carte[i][j]=0;
+            carte[i][j]=32;
         }
     }
 
@@ -362,33 +362,38 @@ void Combat(Joueur *player,Monstre *ennemi)
 
 void DeplacementJoueur(Joueur *p,int **carte)
 {
-    int touche,prec,x,y;
+    int x,y;
+    char touche;
 
-    scanf("%d",&touche);
+    scanf("%c",&touche);
 
     x=p->position[0];
     y=p->position[1];
 
-    if((touche==122) && (carte[x][y+1]!=35) && (y+1<DIMY-1)){
+
+    if((touche=='z') && (carte[x][y+1]!=35) && (y+1<DIMY-1)){//122
         carte[x][y]=p->prec;
         p->prec=carte[x][y+1];
         carte[x][y+1]=42;
     }
-    if((touche==115) && (carte[x][y-1]!=35) && (y-1>0)){
+    if((touche=='s') && (carte[x][y-1]!=35) && (y-1>0)){//115
         carte[x][y]=p->prec;
         p->prec=carte[x][y-1];
         carte[x][y-1]=42;
     }
-    if((touche==113) && (carte[x-1][y]!=35) && (x-1>0)){
+    if((touche=='q') && (carte[x-1][y]!=35) && (x-1>0)){//113
         carte[x][y]=p->prec;
         p->prec=carte[x-1][y];
         carte[x-1][y]=42;
     }
-    if((touche==100) && (carte[x+1][y]!=35) && (x+1<DIMX-1)){
+    if((touche=="d") && (carte[x+1][y]!=35) && (x+1<DIMX-1)){//100
+        printf("maco");
         carte[x][y]=p->prec;
         p->prec=carte[x+1][y];
         carte[x+1][y]=42;
     }
+    //system("cls");
+    affichage(carte);
 }
 void Jeu(Game *p)
 {

@@ -15,7 +15,7 @@ int main()
     printf("3-Supprimer une sauvegarde\n");
     printf("4-Quitter\n");
     scanf("%d",&choix);
-    //system("cls");
+    system("cls");
     switch(choix)
     {
     case 1:
