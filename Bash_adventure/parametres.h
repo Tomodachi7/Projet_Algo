@@ -174,6 +174,7 @@ void initJoueur(Joueur **p){
 
     int choix;
 
+    fgets((*p)->pseudo,20,stdin);
     printf("Saisir votre pseudo de joueur\n");
     fgets((*p)->pseudo,20,stdin);
 
