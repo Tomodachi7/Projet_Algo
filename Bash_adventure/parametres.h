@@ -398,7 +398,7 @@ void Jeu(Game *p)
   continuer=1;
 
   while(continuer==1){
-    DeplacementJoueur(player,map1);
+    DeplacementJoueur(player,p->map1);
 
   }
 
