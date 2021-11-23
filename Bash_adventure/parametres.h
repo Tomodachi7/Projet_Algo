@@ -409,4 +409,28 @@ void Jeu(Game *p)
 
 }
 
+///chargement sauvegarde supression
+//void chargement_fichier(){
+//}
+void sauvegarde_fichier(Game *partie)
+{
+    FILE *fichier;
+    // Ouverture du fichier en écriture grâce à "w"
+    fichier = fopen("save.txt ","a");
+    // Verifier que le fichier a bien été ouvert
+    if (fichier != NULL)
+    {
+        // Ecriture
+        //fprintf(fichier,"%d\n",a);
+        //fprintf(fichier,"%lf\n",b);
+        // Fermeture du fichier
+        fclose(fichier);
+    }
+    else
+    {
+        // On affiche un message d'erreur si on veut
+        printf("Impossible de sauvegarder");
+    }
+}
+
 #endif // PARAMETRES_H_INCLUDED
