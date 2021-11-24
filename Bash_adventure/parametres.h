@@ -63,7 +63,6 @@ int position[2];
 void initGame(Game **partie)
 {
     Joueur *p;
-    char player=42;
     int i,j;
 
     *partie=(Game*)malloc_p(sizeof(Game));
@@ -87,7 +86,7 @@ void initGame(Game **partie)
     initCarte((*partie)->map1);
 
     ///placement du joueur
-    (*partie)->map1[i][j]=player;
+    (*partie)->map1[i][j]=42;
 
     affichage((*partie)->map1);
 }
@@ -365,7 +364,7 @@ void DeplacementJoueur(Joueur *p,int **carte)
     int x,y;
     char touche;
 
-    scanf("%c",&touche);
+    scanf("%c",touche);
 
     x=p->position[0];
     y=p->position[1];
@@ -386,7 +385,7 @@ void DeplacementJoueur(Joueur *p,int **carte)
         p->prec=carte[x-1][y];
         carte[x-1][y]=42;
     }
-    if((touche=="d") && (carte[x+1][y]!=35) && (x+1<DIMX-1)){//100
+    if((touche==100) && (carte[x+1][y]!=35) && (x+1<DIMX-1)){//100
         printf("maco");
         carte[x][y]=p->prec;
         p->prec=carte[x+1][y];
@@ -409,13 +408,29 @@ void Jeu(Game *p)
 
 }
 
-///chargement sauvegarde supression
-//void chargement_fichier(){
-//}
+///chargement d'une sauvegarde
+void chargement_fichier()
+{
+    FILE *fichier;
+    // Ouverture du fichier en lecture grâce à "r"
+    fichier = fopen("save.txt ","r");
+    // Verifier que le fichier a bien été ouvert
+    if (fichier != NULL)
+    {
+
+        // Fermeture du fichier
+        fclose(fichier);
+    }
+    else
+    {
+        // On affiche un message d'erreur si on veut
+        printf("Impossible de sauvegarder");
+    }
+}
 void sauvegarde_fichier(Game *partie)
 {
     FILE *fichier;
-    // Ouverture du fichier en écriture grâce à "w"
+    // Ouverture du fichier en ajout grâce à "a"
     fichier = fopen("save.txt ","a");
     // Verifier que le fichier a bien été ouvert
     if (fichier != NULL)
