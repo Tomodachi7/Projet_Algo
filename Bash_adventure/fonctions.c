@@ -440,8 +440,22 @@ void sauvegarde_fichier(Game *partie)
     if (fichier != NULL)
     {
         // Ecriture
-        //fprintf(fichier,"%d\n",a);
-        //fprintf(fichier,"%lf\n",b);
+        //perso
+        fprintf(fichier,"%d\n",partie->player->prec);
+        fprintf(fichier,"%d\n",partie->player->PV);
+        fprintf(fichier,"%d\n",partie->player->DEF);
+        fprintf(fichier,"%d\n",partie->player->PM);
+        fprintf(fichier,"%d\n",partie->player->LVL);
+        fprintf(fichier,"%d\n",partie->player->XP);
+        fprintf(fichier,"%d\n",partie->player->ATK);
+        fprintf(fichier,"%d\n",partie->player->VIT);
+        fprintf(fichier,"%d\n",partie->player->DEF);
+        fprintf(fichier,"%d\n",partie->player->position[2]);
+        fprintf(fichier,"%s\n",partie->player->pseudo[20]);
+        fprintf(fichier,"%s\n",partie->player->classe[20]);
+        //map
+
+
         // Fermeture du fichier
         fclose(fichier);
     }
