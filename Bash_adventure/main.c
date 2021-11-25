@@ -7,7 +7,6 @@ int main()
 {
     int choix;
     Game *partie;
-    //printf("bash adventure\n\n bienvenue\n\n");
     Menu();
     printf("--Menu--\n");
     printf("1-Jouer\n");
