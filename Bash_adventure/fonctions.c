@@ -11,6 +11,11 @@ void* malloc_p(size_t s)
   return p;
 }
 
+void purgeSTDIN(){
+char ch;
+while ((ch = getchar()) != '\n' && ch != EOF);
+}
+
 void Menu(){
   printf("//////////////////////////////////////////\n");
   printf("//////////////bash adventure//////////////\n");
@@ -48,7 +53,7 @@ void initGame(Game **partie)
     initCarte((*partie)->map1);
 
     ///placement du joueur
-    (*partie)->map1[i][j]=42;
+    (*partie)->map1[i][j+1]=42;
 
     affichage((*partie)->map1);
 }
@@ -86,10 +91,13 @@ void initCarte(int **carte)
         carte[i][0]=124;
     }
 
+    ///placement de la porte
+    carte[(DIMY-1)/2][DIMX-1]=40;
 
-    for(i=0;i<10;i++){
-        x=rand() % (DIMX-2 - 2 + 1) + 2;
-        y=rand() % (DIMY-2 - 2 + 1) + 2;
+    ///Obstacle aléatoire
+    for(i=0;i<20;i++){
+        x=rand() % (DIMX-2 - 3 + 1) + 3;
+        y=rand() % (DIMY-2 - 3 + 1) + 3;
         carte[x][y]=35;
     }
 
@@ -307,13 +315,13 @@ void Combat(Joueur *player,Monstre *ennemi)
                 printf("Attaque magique\n");
                 break;
             case 2:
-                printf("Vous avez décidé de défendre");
+                printf("Vous avez decide de vous defendre");
                 break;
             case 3:
                 printf("Ouverture inventaire");
                 break;
             case 4:
-                printf("Vous êtes un gros lache, honte a vous !\n");
+                printf("Vous etes un gros lache, vous n'avez pas l ame d un guerrier... honte a vous !\n");
                 return 0;
                 break;
 
@@ -327,11 +335,11 @@ void DeplacementJoueur(Joueur *p,int **carte)
     int x,y;
     char touche;
 
-    getc(touche);
+    //purgeSTDIN();
+    //getc(touche);
 
     x=p->position[0];
     y=p->position[1];
-
 
     if((touche=='z') && (carte[x][y+1]!=35) && (y+1<DIMY-1)){//122
         carte[x][y]=p->prec;
@@ -349,7 +357,6 @@ void DeplacementJoueur(Joueur *p,int **carte)
         carte[x-1][y]=42;
     }
     if((touche==100) && (carte[x+1][y]!=35) && (x+1<DIMX-1)){//100
-        printf("maco");
         carte[x][y]=p->prec;
         p->prec=carte[x+1][y];
         carte[x+1][y]=42;
