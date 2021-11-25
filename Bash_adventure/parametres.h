@@ -21,19 +21,28 @@ int VIT;
 int position[2];
 };
 
+typedef struct Univers Univers;
+struct Univers{
+int **carte;
+Univers *suivante;
+};
+
 typedef struct Game Game;
 struct Game{
 Joueur *player;
 int **map1[DIMY];
 int **map2[DIMY];
 int **map3[DIMY];
+Univers *Galaxy;
 int time;
 
 };
 
+
+
 typedef struct Monstre Monstre;
 struct Monstre{
-int represention;
+int representation;
 int prec;
 char nom[20];
 int PV;

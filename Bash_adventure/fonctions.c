@@ -32,6 +32,8 @@ void initGame(Game **partie)
     Joueur *p;
     int i,j;
 
+    Univers *Cosmos;
+
     *partie=(Game*)malloc_p(sizeof(Game));
 
     p=(*partie)->player;
@@ -49,13 +51,31 @@ void initGame(Game **partie)
     Creation_map((*partie)->map2);
     Creation_map((*partie)->map3);
 
-    ///initialisation de la carte
+    ///initialisation du COSMOS
     initCarte((*partie)->map1);
+    initCarte((*partie)->map2);
+    initCarte((*partie)->map3);
+
+    ///Trou de vers
+    Cosmos=(*partie)->Galaxy;
+
+    Cosmos->carte=(*partie)->map1;
+
+    Cosmos->suivante=(*partie)->map2;
+
+    Cosmos=Cosmos->suivante;
+
+    Cosmos->suivante=(*partie)->map3;
+
+    Cosmos=Cosmos->suivante;
+
+    Cosmos->suivante=NULL;
 
     ///placement du joueur
     (*partie)->map1[i][j+1]=42;
 
-    affichage((*partie)->map1);
+    Cosmos=(*partie)->Galaxy;
+    affichage(Cosmos->carte);
 }
 
 void Creation_map(int **carte)
@@ -219,21 +239,21 @@ void init_monstre(Monstre **self,int nv_map)
 
     if (strcmp(t[x],'zombie'))
     {
-        (*self)->represention=35;
+        (*self)->representation=35;
         (*self)->PV=100+PV;
         (*self)->XP=XP;
         (*self)->ATK=7*ATK;
     }
     if (strcmp(t[x],'slime'))
     {
-        (*self)->represention=35;
+        (*self)->representation=35;
         (*self)->PV=50;
         (*self)->XP=XP;
         (*self)->ATK=1*ATK;
     }
     if (strcmp(t[x],'zombie'))
     {
-        (*self)->represention=35;
+        (*self)->representation=35;
         (*self)->PV=200+PV;
         (*self)->XP=XP;
         (*self)->ATK=10*ATK;
@@ -258,7 +278,7 @@ void deplament_monstre(int **carte,Monstre *monstre)
             if((x+1<DIMX-1) && (carte[x+1][y]!=35)){
                 carte[x][y]=monstre->prec;
                 monstre->prec=carte[x+1][y];
-                carte[x+1][y]=monstre->represention;
+                carte[x+1][y]=monstre->representation;
             }
         }
     if(i==1)
@@ -267,7 +287,7 @@ void deplament_monstre(int **carte,Monstre *monstre)
             {
                 carte[x][y]=monstre->prec;
                 monstre->prec=carte[x][y+1];
-                carte[x][y+1]=monstre->represention;
+                carte[x][y+1]=monstre->representation;
             }
         }
     if(i==2)
@@ -276,7 +296,7 @@ void deplament_monstre(int **carte,Monstre *monstre)
             {
                 carte[x][y]=monstre->prec;
                 monstre->prec=carte[x-1][y];
-                carte[x-1][y]=monstre->represention;
+                carte[x-1][y]=monstre->representation;
             }
         }
     if((i==3) && (carte[x][y-1]!=35))
@@ -285,7 +305,7 @@ void deplament_monstre(int **carte,Monstre *monstre)
             {
                 carte[x][y]=monstre->prec;
                 monstre->prec=carte[x][y-1];
-                carte[x][y-1]=monstre->represention;
+                carte[x][y-1]=monstre->representation;
             }
         }
 }
@@ -366,15 +386,29 @@ void DeplacementJoueur(Joueur *p,int **carte)
 }
 void Jeu(Game *p)
 {
-  int continuer;
-  Joueur *player;
-  player=p->player;
-  continuer=1;
+    int continuer,i;
+    Joueur *player;
+    Monstre *monstre;
+    Univers *Cosmos;
 
-  while(continuer==1){
-    DeplacementJoueur(player,p->map1);
+    Cosmos=p->Galaxy;
+    player=p->player;
+    continuer=1;
 
-  }
+    for(i=0;i<3;i++){
+
+    }
+
+    while(continuer==1){
+        DeplacementJoueur(player,Cosmos->carte);
+        if(player->prec=monstre->representation){
+            Combat(player,monstre);
+        }
+        if((player->position[0]==(DIMY-1)/2)&&(player->position[1]==DIMX-1)){
+            printf("Voulez vous passez au niveau suivant ?\n");
+            printf("1.Oui\n2.Non\n");
+        }
+    }
 
 }
 
