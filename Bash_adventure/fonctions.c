@@ -50,9 +50,19 @@ void initGame(Game **partie)
     Joueur *p;
     int i,j;
 
-    //Univers *Cosmos;
+    Univers *Cosmos1;
+    Univers *Cosmos2;
+    Univers *Cosmos3;
 
     *partie=(Game*)malloc_p(sizeof(Game));
+
+    Cosmos1=(*partie)->Galaxy1;
+    Cosmos2=(*partie)->Galaxy2;
+    Cosmos3=(*partie)->Galaxy3;
+
+    Cosmos1=(Univers*)malloc_p(sizeof(Univers));
+    Cosmos2=(Univers*)malloc_p(sizeof(Univers));
+    Cosmos3=(Univers*)malloc_p(sizeof(Univers));
 
     p=(*partie)->player;
     initJoueur(&p);
@@ -65,36 +75,24 @@ void initGame(Game **partie)
     p->position[0]=i;
     p->position[1]=j;
 
-    Creation_map((*partie)->map1);
-    Creation_map((*partie)->map2);
-    Creation_map((*partie)->map3);
+    Creation_map(Cosmos1->carte);
+    Creation_map(Cosmos2->carte);
+    Creation_map(Cosmos3->carte);
 
     ///initialisation du COSMOS
-    initCarte((*partie)->map1);
-    initCarte((*partie)->map2);
-    initCarte((*partie)->map3);
-    affichage((*partie)->map1);
+    initCarte(Cosmos1->carte);
+    initCarte(Cosmos2->carte);
+    initCarte(Cosmos3->carte);
 
     ///Trou de vers
-    /*Cosmos=(*partie)->Galaxy;
-
-    Cosmos->carte=(*partie)->map1;
-
-    Cosmos->suivante=(*partie)->map2;
-
-    Cosmos=Cosmos->suivante;
-
-    Cosmos->suivante=(*partie)->map3;
-
-    Cosmos=Cosmos->suivante;
-
-    Cosmos->suivante=NULL;
+    Cosmos1->suivante=Cosmos2;
+    Cosmos2->suivante=Cosmos3;
+    Cosmos3->suivante=NULL;
 
     ///placement du joueur
-    (*partie)->map1[i][j+1]=42;
+    Cosmos1->carte[i][j+1]=42;
 
-    Cosmos=(*partie)->Galaxy;
-    affichage(Cosmos->carte);*/
+    affichage(Cosmos1->carte);
 }
 
 void Creation_map(int **carte)
@@ -210,6 +208,7 @@ void initJoueur(Joueur **p){
 
     if(choix==1){
         strcpy((*p)->classe,"Archer");
+        printf("Flexion !\n");
     }
     if(choix==2){
       strcpy((*p)->classe,"Caster");
@@ -410,7 +409,7 @@ void Jeu(Game *p)
     Monstre *monstre;
     Univers *Cosmos;
 
-    Cosmos=p->Galaxy;
+    Cosmos=p->Galaxy1;
     player=p->player;
     continuer=1;
 

@@ -24,17 +24,16 @@ int position[2];
 
 typedef struct Univers Univers;
 struct Univers{
-int **carte;
+int *carte[DIMY];
 Univers *suivante;
 };
 
 typedef struct Game Game;
 struct Game{
 Joueur *player;
-int *map1[DIMY];
-int *map2[DIMY];
-int *map3[DIMY];
-Univers *Galaxy;
+Univers *Galaxy1;
+Univers *Galaxy2;
+Univers *Galaxy3;
 int time;
 
 };
