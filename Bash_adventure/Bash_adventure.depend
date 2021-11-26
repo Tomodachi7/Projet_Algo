@@ -5,9 +5,10 @@
 	<time.h>
 	"parametres.h"
 
-1637958341 d:\users\ludovic\documents\github\projet_algo\bash_adventure\parametres.h
+1637964420 d:\users\ludovic\documents\github\projet_algo\bash_adventure\parametres.h
 	<stddef.h>
 	<stdio.h>
+	<string.h>
 	<stdlib.h>
 	<time.h>
 
@@ -38,8 +39,12 @@
 	<stdio.h>
 	<stdlib.h>
 
-1637963182 source:d:\users\ludovic\documents\github\projet_algo\bash_adventure\fonctions.c
+1637964317 source:d:\users\ludovic\documents\github\projet_algo\bash_adventure\fonctions.c
 	"parametres.h"
+	<stddef.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
 	<time.h>
 
 1637882729 source:d:\users\ludovic\documents\miage\algo et prog\projet bash adventure\jeu\bash_adventure\fonctions.c

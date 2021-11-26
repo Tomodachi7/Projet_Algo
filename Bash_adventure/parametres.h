@@ -2,6 +2,7 @@
 #define PARAMETRES_H_INCLUDED
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <time.h>
 #define DIMX 62
