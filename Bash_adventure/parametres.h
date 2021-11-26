@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #define DIMX 62
 #define DIMY 31
 
@@ -30,9 +31,9 @@ Univers *suivante;
 typedef struct Game Game;
 struct Game{
 Joueur *player;
-int **map1[DIMY];
-int **map2[DIMY];
-int **map3[DIMY];
+int *map1[DIMY];
+int *map2[DIMY];
+int *map3[DIMY];
 Univers *Galaxy;
 int time;
 
@@ -54,7 +55,7 @@ int position[2];
 };
 
 void* malloc_p(size_t s);
-void Menu();
+int Menu();
 void initGame(Game **partie);
 void Creation_map(int **carte);
 void initCarte(int **carte);

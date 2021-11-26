@@ -1,4 +1,5 @@
 #include "parametres.h"
+#include <time.h>
 #define DIMX 62
 #define DIMY 31
 
@@ -16,15 +17,32 @@ char ch;
 while ((ch = getchar()) != '\n' && ch != EOF);
 }
 
-void Menu(){
-  printf("//////////////////////////////////////////\n");
-  printf("//////////////bash adventure//////////////\n");
-  printf("//////////////////////////////////////////\n");
-  sleep(1);
-  printf("by \n DYLAS William \n SURVILLE BARLAND Enrick \n TARET Ludovic \n ");
-  sleep(3);
-  system("cls");
-  printf("bienvenue\n\n");
+int Menu()
+{
+    int choix;
+
+    printf("//////////////////////////////////////////\n");
+    printf("//////////////bash adventure//////////////\n");
+    printf("//////////////////////////////////////////\n");
+    sleep(1);
+
+    printf("by \n DYLAS William \n SURVILLE BARLAND Enrick \n TARET Ludovic \n ");
+    sleep(2);
+
+    system("cls");
+
+    printf("bienvenue\n\n");
+    printf("--Menu--\n");
+    printf("1-Jouer\n");
+    printf("2-Charger une sauvegarde\n");
+    printf("3-Supprimer une sauvegarde\n");
+    printf("4-Quitter\n");
+
+    scanf("%d",&choix);
+
+    system("cls");
+
+    return choix;
 }
 
 void initGame(Game **partie)
@@ -32,7 +50,7 @@ void initGame(Game **partie)
     Joueur *p;
     int i,j;
 
-    Univers *Cosmos;
+    //Univers *Cosmos;
 
     *partie=(Game*)malloc_p(sizeof(Game));
 
@@ -55,9 +73,10 @@ void initGame(Game **partie)
     initCarte((*partie)->map1);
     initCarte((*partie)->map2);
     initCarte((*partie)->map3);
+    affichage((*partie)->map1);
 
     ///Trou de vers
-    Cosmos=(*partie)->Galaxy;
+    /*Cosmos=(*partie)->Galaxy;
 
     Cosmos->carte=(*partie)->map1;
 
@@ -75,7 +94,7 @@ void initGame(Game **partie)
     (*partie)->map1[i][j+1]=42;
 
     Cosmos=(*partie)->Galaxy;
-    affichage(Cosmos->carte);
+    affichage(Cosmos->carte);*/
 }
 
 void Creation_map(int **carte)
@@ -355,23 +374,23 @@ void DeplacementJoueur(Joueur *p,int **carte)
     int x,y;
     char touche;
 
-    //purgeSTDIN();
-    //getc(touche);
+    purgeSTDIN();
+    getc(touche);
 
     x=p->position[0];
     y=p->position[1];
 
-    if((touche=='z') && (carte[x][y+1]!=35) && (y+1<DIMY-1)){//122
+    if((touche==122) && (carte[x][y+1]!=35) && (y+1<DIMY-1)){//122
         carte[x][y]=p->prec;
         p->prec=carte[x][y+1];
         carte[x][y+1]=42;
     }
-    if((touche=='s') && (carte[x][y-1]!=35) && (y-1>0)){//115
+    if((touche==115) && (carte[x][y-1]!=35) && (y-1>0)){//115
         carte[x][y]=p->prec;
         p->prec=carte[x][y-1];
         carte[x][y-1]=42;
     }
-    if((touche=='q') && (carte[x-1][y]!=35) && (x-1>0)){//113
+    if((touche==113) && (carte[x-1][y]!=35) && (x-1>0)){//113
         carte[x][y]=p->prec;
         p->prec=carte[x-1][y];
         carte[x-1][y]=42;
@@ -381,7 +400,7 @@ void DeplacementJoueur(Joueur *p,int **carte)
         p->prec=carte[x+1][y];
         carte[x+1][y]=42;
     }
-    //system("cls");
+    system("cls");
     affichage(carte);
 }
 void Jeu(Game *p)
