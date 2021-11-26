@@ -56,6 +56,10 @@ void initGame(Game **partie)
 
     *partie=(Game*)malloc_p(sizeof(Game));
 
+    ///Dieu dit : « Faisons l’homme à notre image, selon notre ressemblance»
+    p=(*partie)->player;
+    initJoueur(&p);
+
     Cosmos1=(*partie)->Galaxy1;
     Cosmos2=(*partie)->Galaxy2;
     Cosmos3=(*partie)->Galaxy3;
@@ -64,8 +68,6 @@ void initGame(Game **partie)
     Cosmos2=(Univers*)malloc_p(sizeof(Univers));
     Cosmos3=(Univers*)malloc_p(sizeof(Univers));
 
-    p=(*partie)->player;
-    initJoueur(&p);
 
     (*partie)->time=0;
 
@@ -74,12 +76,12 @@ void initGame(Game **partie)
 
     p->position[0]=i;
     p->position[1]=j;
-
+    ///AU COMMENCEMENT, Dieu créa le ciel et la terre.
     Creation_map(Cosmos1->carte);
     Creation_map(Cosmos2->carte);
     Creation_map(Cosmos3->carte);
 
-    ///initialisation du COSMOS
+    ///Dieu dit : « Que la lumière soit. » Et la lumière fut.»
     initCarte(Cosmos1->carte);
     initCarte(Cosmos2->carte);
     initCarte(Cosmos3->carte);
@@ -88,6 +90,8 @@ void initGame(Game **partie)
     Cosmos1->suivante=Cosmos2;
     Cosmos2->suivante=Cosmos3;
     Cosmos3->suivante=NULL;
+
+
 
     ///placement du joueur
     Cosmos1->carte[i][j+1]=42;
@@ -229,7 +233,7 @@ void init_monstre(Monstre **self,int nv_map)
 
     int x,i,j,PV,XP,ATK;
 
-    char t[3]={'zombie' , 'slime', 'dragon'};
+    char *t[]={"zombie" , "slime", "dragon"};
 
     *self=malloc_p(sizeof(Monstre));
 
@@ -255,21 +259,21 @@ void init_monstre(Monstre **self,int nv_map)
         XP=25;
     }
 
-    if (strcmp(t[x],'zombie'))
+    if (strcmp(t[x],"zombie"))
     {
         (*self)->representation=35;
         (*self)->PV=100+PV;
         (*self)->XP=XP;
         (*self)->ATK=7*ATK;
     }
-    if (strcmp(t[x],'slime'))
+    if (strcmp(t[x],"slime"))
     {
         (*self)->representation=35;
         (*self)->PV=50;
         (*self)->XP=XP;
         (*self)->ATK=1*ATK;
     }
-    if (strcmp(t[x],'zombie'))
+    if (strcmp(t[x],"dragon"))
     {
         (*self)->representation=35;
         (*self)->PV=200+PV;
@@ -285,7 +289,7 @@ void deplament_monstre(int **carte,Monstre *monstre)
 {
     srand( time( NULL ) );
 
-    int i,x,y,prec;
+    int i,x,y;
 
     x=monstre->position[0];
     y=monstre->position[1];
@@ -330,12 +334,12 @@ void deplament_monstre(int **carte,Monstre *monstre)
 
 void Combat(Joueur *player,Monstre *ennemi)
 {
-    int choix;
+    int choix=0;
 
     printf("Vous êtes en combat, il est l'heure de montrer ce que vous savez faire !\n\n");
 
 
-    while((player->PV!=0)||(ennemi->PV!=0)){
+    while((player->PV!=0)||(ennemi->PV!=0)||(choix!=4)){
 
         printf("Faites votre choix:\n");
         printf("1.Attaquer\n");
@@ -360,7 +364,6 @@ void Combat(Joueur *player,Monstre *ennemi)
                 break;
             case 4:
                 printf("Vous etes un gros lache, vous n'avez pas l ame d un guerrier... honte a vous !\n");
-                return 0;
                 break;
 
         }
@@ -414,12 +417,13 @@ void Jeu(Game *p)
     continuer=1;
 
     for(i=0;i<3;i++){
-
+        ///Et Dieu dit : « Que la terre produise des êtres vivants selon leur espèce, bestiaux, bestioles et bêtes sauvages selon leur espèce. »
+        init_monstre(&monstre,1);
     }
 
     while(continuer==1){
         DeplacementJoueur(player,Cosmos->carte);
-        if(player->prec=monstre->representation){
+        if(player->prec==monstre->representation){
             Combat(player,monstre);
         }
         if((player->position[0]==(DIMY-1)/2)&&(player->position[1]==DIMX-1)){
