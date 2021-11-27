@@ -212,7 +212,6 @@ void initJoueur(Joueur **p){
     (*p)->portefeuille=100;
 
     purgeSTDIN();
-    fgets((*p)->pseudo,20,stdin);
     printf("Saisir votre pseudo de joueur\n");
     fgets((*p)->pseudo,20,stdin);
 
