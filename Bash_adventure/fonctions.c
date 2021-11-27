@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#define DIMX 62
-#define DIMY 31
+
 
 
 void* malloc_p(size_t s)
@@ -54,6 +53,9 @@ void initGame(Game **partie)
     Joueur *p;
     int i,j;
 
+    j=0;
+    i=(DIMY-1)/2;
+
     Univers *Cosmos1;
     Univers *Cosmos2;
     Univers *Cosmos3;
@@ -68,24 +70,25 @@ void initGame(Game **partie)
     Cosmos2=(*partie)->Galaxy2;
     Cosmos3=(*partie)->Galaxy3;
 
+    Cosmos1->level=1;
+    Cosmos2->level=2;
+    Cosmos3->level=3;
+
     Cosmos1=(Univers*)malloc_p(sizeof(Univers));
     Cosmos2=(Univers*)malloc_p(sizeof(Univers));
     Cosmos3=(Univers*)malloc_p(sizeof(Univers));
 
-
     (*partie)->time=0;
-
-    j=0;
-    i=(DIMY-1)/2;
 
     p->position[0]=i;
     p->position[1]=j;
+
     ///AU COMMENCEMENT, Dieu créa le ciel et la terre.
     Creation_map(Cosmos1->carte);
     Creation_map(Cosmos2->carte);
     Creation_map(Cosmos3->carte);
 
-    ///Dieu dit : « Que la lumière soit. » Et la lumière fut.»
+    ///Dieu dit : « Que la lumière soit. » Et la lumière fut.» ("Bon là c'est pas vraiment éclairé vu qu'on voit rien, mais bon...")
     initCarte(Cosmos1->carte);
     initCarte(Cosmos2->carte);
     initCarte(Cosmos3->carte);
@@ -94,8 +97,6 @@ void initGame(Game **partie)
     Cosmos1->suivante=Cosmos2;
     Cosmos2->suivante=Cosmos3;
     Cosmos3->suivante=NULL;
-
-
 
     ///placement du joueur
     Cosmos1->carte[i][j+1]=42;
@@ -201,7 +202,16 @@ void initJoueur(Joueur **p){
     *p=(Joueur*)malloc_p(sizeof(Joueur));
 
     int choix;
+    int sexe;
 
+    printf("Choisissez votre genre: 1.Mâle alpha 2.Femme\n");
+    scanf("%d",&sexe);
+
+    (*p)->sexe=sexe;
+
+    (*p)->portefeuille=100;
+
+    purgeSTDIN();
     fgets((*p)->pseudo,20,stdin);
     printf("Saisir votre pseudo de joueur\n");
     fgets((*p)->pseudo,20,stdin);
@@ -411,7 +421,7 @@ void DeplacementJoueur(Joueur *p,int **carte)
 }
 void Jeu(Game *p)
 {
-    int continuer,i;
+    int continuer,i,fin,tours,ind,x,y,choix;
     Joueur *player;
     Monstre *monstre;
     Univers *Cosmos;
@@ -419,22 +429,62 @@ void Jeu(Game *p)
     Cosmos=p->Galaxy1;
     player=p->player;
     continuer=1;
+    fin=0;
 
-    for(i=0;i<3;i++){
-        ///Et Dieu dit : « Que la terre produise des êtres vivants selon leur espèce, bestiaux, bestioles et bêtes sauvages selon leur espèce. »
-        init_monstre(&monstre,1);
+    while(fin){
+        if(Cosmos->level==1){
+        tours=3;
+        }
+
+        if(Cosmos->level==2){
+            tours=4;
+        }
+
+        if(Cosmos->level==3){
+            tours=5;
+        }
+
+        for(i=0;i<tours;i++){
+            ///Et Dieu dit : « Que la terre produise des êtres vivants selon leur espèce, bestiaux, bestioles et bêtes sauvages selon leur espèce. »
+            init_monstre(&monstre,1);
+        }
+
+        while(continuer==1){
+            DeplacementJoueur(player,Cosmos->carte);
+
+            if(player->prec==monstre->representation){
+                Combat(player,monstre);
+            }
+
+            if(player->prec==40){
+                ind=Test_Key(player->sacado);
+                if(ind==-1){
+                    printf("Vous n'avez pas la cle, revenez quand vous l'aurez malotru !");
+                    x=player->position[0];
+                    y=player->position[1];
+                    Cosmos->carte[x][y]=player->prec;
+                    player->prec=Cosmos->carte[x-1][y];
+                    Cosmos->carte[x-1][y]=42;
+                }
+                else{
+                    printf("Voulez vous passez au niveau suivant ?\n");
+                    printf("1.Oui  2.Non\n");
+                    scanf("%d",&choix);
+                }
+
+            }
+            if(choix==1){
+                break;
+            }
+        }
+        Cosmos=Cosmos->suivante;
+        if(Cosmos==NULL){
+            fin=1;
+        }
     }
 
-    while(continuer==1){
-        DeplacementJoueur(player,Cosmos->carte);
-        if(player->prec==monstre->representation){
-            Combat(player,monstre);
-        }
-        if((player->position[0]==(DIMY-1)/2)&&(player->position[1]==DIMX-1)){
-            printf("Voulez vous passez au niveau suivant ?\n");
-            printf("1.Oui\n2.Non\n");
-        }
-    }
+    printf("L'aventure fut rempli de nombreux obstacles mais vous avez su relever le defi.\nSoyez fière de vous jeune aventurier, mais votre histoire ne s'arrête pas ici petit scarabe !\n");
+    printf("Il vous reste encore d'autres mondes à découvrir, que la force soit avec vous !");
 
 }
 
@@ -490,4 +540,23 @@ void sauvegarde_fichier(Game *partie)
         // On affiche un message d'erreur si on veut
         printf("Impossible de sauvegarder");
     }
+}
+
+int Test_Key(int *tab){
+    int i;
+    int VerifKey=-1;
+
+    for(i=0;i<TAILLE_SAC;i++){
+      if(tab[i]==45){
+        VerifKey=i;
+      }
+    }
+
+    if(VerifKey!=-1){
+      printf("Mon precieuuuuux !!!",VerifKey);
+    }
+    else{
+      printf("Vous resterez coincés encore dans ce donjon");
+    }
+    return VerifKey;
 }

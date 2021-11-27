@@ -7,11 +7,13 @@
 #include <time.h>
 #define DIMX 62
 #define DIMY 31
+#define TAILLE_SAC 4
 
 typedef struct Joueur Joueur;
 struct Joueur{
 char pseudo[20];
 char classe[20];
+int sexe;
 int prec;
 int PV;
 int DEF;
@@ -21,11 +23,14 @@ int XP;
 int ATK;
 int VIT;
 int position[2];
+int sacado[TAILLE_SAC];
+int portefeuille;
 };
 
 typedef struct Univers Univers;
 struct Univers{
 int *carte[DIMY];
+int level;
 Univers *suivante;
 };
 
@@ -69,5 +74,6 @@ void DeplacementJoueur(Joueur *p,int **carte);
 void Jeu(Game *p);
 void chargement_fichier();
 void sauvegarde_fichier(Game *partie);
+int Test_Key(int *tab);
 
 #endif // PARAMETRES_H_INCLUDED
