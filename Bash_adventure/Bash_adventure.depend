@@ -12,13 +12,19 @@
 	<stdlib.h>
 	<time.h>
 
-1637103408 source:c:\users\will\documents\github\projet_algo\bash_adventure\main.c
+1638053799 source:c:\users\will\documents\github\projet_algo\bash_adventure\main.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 	<time.h>
 	"parametres.h"
 
-1637104380 c:\users\will\documents\github\projet_algo\bash_adventure\parametres.h
+1638053695 c:\users\will\documents\github\projet_algo\bash_adventure\parametres.h
+	<stddef.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<time.h>
 
 1637104510 source:d:\users\ludovic\desktop\bash_adventure\main.c
 	<stdio.h>
@@ -50,6 +56,14 @@
 	<time.h>
 
 1638042724 source:d:\users\ludovic\documents\miage\algo et prog\projet bash adventure\jeu\bash_adventure\fonctions.c
+	"parametres.h"
+	<stddef.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1638053772 source:c:\users\will\documents\github\projet_algo\bash_adventure\fonctions.c
 	"parametres.h"
 	<stddef.h>
 	<stdio.h>

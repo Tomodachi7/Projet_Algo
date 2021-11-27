@@ -489,7 +489,7 @@ void Jeu(Game *p)
 }
 
 ///chargement d'une sauvegarde
-void chargement_fichier()
+void chargement_fichier(Game *partie)
 {
     FILE *fichier;
     // Ouverture du fichier en lecture grâce à "r"
@@ -497,6 +497,21 @@ void chargement_fichier()
     // Verifier que le fichier a bien été ouvert
     if (fichier != NULL)
     {
+        //perso
+        partie->player->prec=fscanf(fichier,"%d\n",partie->player->prec);
+        partie->player->PV=fscanf(fichier,"%d\n",partie->player->PV);
+        partie->player->DEF=fscanf(fichier,"%d\n",partie->player->DEF);
+        partie->player->PM=fscanf(fichier,"%d\n",partie->player->PM);
+        partie->player->LVL=fscanf(fichier,"%d\n",partie->player->LVL);
+        partie->player->XP=fscanf(fichier,"%d\n",partie->player->XP);
+        partie->player->ATK=fscanf(fichier,"%d\n",partie->player->ATK);
+        partie->player->VIT=fscanf(fichier,"%d\n",partie->player->VIT);
+        partie->player->DEF=fscanf(fichier,"%d\n",partie->player->DEF);
+        partie->player->position[2]=fscanf(fichier,"%d\n",partie->player->position[2]);
+        partie->player->pseudo[20]=fscanf(fichier,"%s\n",partie->player->pseudo[20]);
+        partie->player->classe[20]=fscanf(fichier,"%s\n",partie->player->classe[20]);
+        //map
+        //monstre
 
         // Fermeture du fichier
         fclose(fichier);
@@ -530,6 +545,22 @@ void sauvegarde_fichier(Game *partie)
         fprintf(fichier,"%s\n",partie->player->pseudo[20]);
         fprintf(fichier,"%s\n",partie->player->classe[20]);
         //map
+        /*
+        fprintf(fichier,"%s\n",partie->lvl_map);
+        if(lvl_map==1)
+        {
+            fprintf(fichier,"%d",partie->galaxie1);
+        }
+        if(lvl_map==2)
+        {
+            fprintf(fichier,"%d",partie->galaxie2);
+        }
+        if(lvl_map==3)
+        {
+            fprintf(fichier,"%d",partie->galaxie3);
+        }
+        */
+        //monstre
 
 
         // Fermeture du fichier
@@ -541,6 +572,11 @@ void sauvegarde_fichier(Game *partie)
         printf("Impossible de sauvegarder");
     }
 }
+void libere(Game *partie)
+{
+    free(partie);
+}
+
 
 int Test_Key(int *tab){
     int i;
