@@ -90,8 +90,6 @@ void initGame(Game **partie)
 
     ///Dieu dit : « Que la lumière soit. » Et la lumière fut.» ("Bon là c'est pas vraiment éclairé vu qu'on voit rien, mais bon...")
     initCarte(Cosmos1->carte);
-    initCarte(Cosmos2->carte);
-    initCarte(Cosmos3->carte);
 
     ///Trou de vers
     Cosmos1->suivante=Cosmos2;
@@ -204,7 +202,7 @@ void initJoueur(Joueur **p){
     int choix;
     int sexe;
 
-    printf("Choisissez votre genre: 1.Mâle alpha 2.Femme\n");
+    printf("Choisissez votre genre: 1.Male alpha 2.Femme\n");
     scanf("%d",&sexe);
 
     (*p)->sexe=sexe;
@@ -225,7 +223,6 @@ void initJoueur(Joueur **p){
 
     if(choix==1){
         strcpy((*p)->classe,"Archer");
-        printf("Flexion !\n");
     }
     if(choix==2){
       strcpy((*p)->classe,"Caster");
@@ -387,7 +384,7 @@ void Combat(Joueur *player,Monstre *ennemi)
 void DeplacementJoueur(Joueur *p,int **carte)
 {
     int x,y;
-    char touche;
+    char touche=0;
 
     purgeSTDIN();
     getc(touche);
@@ -420,7 +417,7 @@ void DeplacementJoueur(Joueur *p,int **carte)
 }
 void Jeu(Game *p)
 {
-    int continuer,i,fin,tours,ind,x,y,choix;
+    int continuer,i,fin,tours,ind,x,y,choix,s;
     Joueur *player;
     Monstre *monstre;
     Univers *Cosmos;
@@ -455,6 +452,12 @@ void Jeu(Game *p)
                 Combat(player,monstre);
             }
 
+            if(player->prec==83){
+                printf("Voulez vous sauvegarder la partie ? 1.Oui 2.Non");
+                scanf("%d",&s);
+                if(s==1) sauvegarde_fichier(p);
+            }
+
             if(player->prec==40){
                 ind=Test_Key(player->sacado);
                 if(ind==-1){
@@ -472,18 +475,19 @@ void Jeu(Game *p)
                 }
 
             }
-            if(choix==1){
-                break;
-            }
+
+            if(choix==1) break;
         }
+
         Cosmos=Cosmos->suivante;
-        if(Cosmos==NULL){
-            fin=1;
-        }
+        initCarte(Cosmos->carte);
+
+        if(Cosmos==NULL) fin=1;
     }
 
+    printf("Aah enfin vous voilà...\n");
     printf("L'aventure fut rempli de nombreux obstacles mais vous avez su relever le defi.\nSoyez fière de vous jeune aventurier, mais votre histoire ne s'arrête pas ici petit scarabe !\n");
-    printf("Il vous reste encore d'autres mondes à découvrir, que la force soit avec vous !");
+    printf("Il vous reste encore d'autres mondes a decouvrir, que la force soit avec vous !");
 
 }
 
@@ -588,7 +592,7 @@ int Test_Key(int *tab){
     }
 
     if(VerifKey!=-1){
-      printf("Mon precieuuuuux !!!",VerifKey);
+      printf("Mon precieuuuuux !!!");
     }
     else{
       printf("Vous resterez coincés encore dans ce donjon");

@@ -21,10 +21,10 @@ int main()
             Jeu(partie);
             break;
         case 2:
-            //fonction charger supp sauvegarde
+            chargement_fichier();
             break;
         case 3:
-            //fonction pour explique comment on joue
+            //fonction pour supprimer une sauvegarde
             break;
         case 4:
             break;

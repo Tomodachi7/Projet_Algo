@@ -1,11 +1,12 @@
 # depslib dependency file v1.0
-1637955734 source:d:\users\ludovic\documents\github\projet_algo\bash_adventure\main.c
+1638137494 source:d:\users\ludovic\documents\github\projet_algo\bash_adventure\main.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 	<time.h>
 	"parametres.h"
 
-1637964420 d:\users\ludovic\documents\github\projet_algo\bash_adventure\parametres.h
+1638052709 d:\users\ludovic\documents\github\projet_algo\bash_adventure\parametres.h
 	<stddef.h>
 	<stdio.h>
 	<string.h>
@@ -47,7 +48,7 @@
 	<stdlib.h>
 	<time.h>
 
-1637964317 source:d:\users\ludovic\documents\github\projet_algo\bash_adventure\fonctions.c
+1638136562 source:d:\users\ludovic\documents\github\projet_algo\bash_adventure\fonctions.c
 	"parametres.h"
 	<stddef.h>
 	<stdio.h>
