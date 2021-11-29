@@ -66,17 +66,25 @@ void initGame(Game **partie)
     p=(*partie)->player;
     initJoueur(&p);
 
-    Cosmos1=(*partie)->Galaxy1;
-    Cosmos2=(*partie)->Galaxy2;
-    Cosmos3=(*partie)->Galaxy3;
+    printf("un truc marrant");
+
+    Cosmos1=(Univers*)malloc_p(sizeof(Univers));
+    Cosmos2=(Univers*)malloc_p(sizeof(Univers));
+    Cosmos3=(Univers*)malloc_p(sizeof(Univers));
+
+    printf("un truc marrant");
+
+    (*partie)->Galaxy1=Cosmos1;
+    (*partie)->Galaxy2=Cosmos2;
+    (*partie)->Galaxy3=Cosmos3;
+
+    printf("un truc marrant");
 
     Cosmos1->level=1;
     Cosmos2->level=2;
     Cosmos3->level=3;
 
-    Cosmos1=(Univers*)malloc_p(sizeof(Univers));
-    Cosmos2=(Univers*)malloc_p(sizeof(Univers));
-    Cosmos3=(Univers*)malloc_p(sizeof(Univers));
+    printf("un truc marrant");
 
     (*partie)->time=0;
 
@@ -88,18 +96,25 @@ void initGame(Game **partie)
     Creation_map(Cosmos2->carte);
     Creation_map(Cosmos3->carte);
 
+    printf("un truc marrant");
+
     ///Dieu dit : « Que la lumière soit. » Et la lumière fut.» ("Bon là c'est pas vraiment éclairé vu qu'on voit rien, mais bon...")
     initCarte(Cosmos1->carte);
+
+    printf("un truc marrant");
 
     ///Trou de vers
     Cosmos1->suivante=Cosmos2;
     Cosmos2->suivante=Cosmos3;
     Cosmos3->suivante=NULL;
 
+    printf("un truc marrant");
+
     ///placement du joueur
     Cosmos1->carte[i][j+1]=42;
 
     affichage(Cosmos1->carte);
+    printf("un truc marrant");
 }
 
 void Creation_map(int **carte)
@@ -206,7 +221,7 @@ void initJoueur(Joueur **p){
     scanf("%d",&sexe);
 
     (*p)->sexe=sexe;
-
+    (*p)->prec=32;
     (*p)->portefeuille=100;
 
     purgeSTDIN();
@@ -384,10 +399,10 @@ void Combat(Joueur *player,Monstre *ennemi)
 void DeplacementJoueur(Joueur *p,int **carte)
 {
     int x,y;
-    char touche=0;
+    char touche;
 
     purgeSTDIN();
-    getc(touche);
+    touche=getc(stdin);
 
     x=p->position[0];
     y=p->position[1];
@@ -501,7 +516,7 @@ void chargement_fichier(Game *partie)
     if (fichier != NULL)
     {
         //perso
-        partie->player->prec=fscanf(fichier,"%d\n",partie->player->prec);
+        partie->player->prec=fscanf(fichier,"%d\n",&partie->player->prec);
         partie->player->PV=fscanf(fichier,"%d\n",partie->player->PV);
         partie->player->DEF=fscanf(fichier,"%d\n",partie->player->DEF);
         partie->player->PM=fscanf(fichier,"%d\n",partie->player->PM);
@@ -544,9 +559,10 @@ void sauvegarde_fichier(Game *partie)
         fprintf(fichier,"%d\n",partie->player->ATK);
         fprintf(fichier,"%d\n",partie->player->VIT);
         fprintf(fichier,"%d\n",partie->player->DEF);
-        fprintf(fichier,"%d\n",partie->player->position[2]);
-        fprintf(fichier,"%s\n",partie->player->pseudo[20]);
-        fprintf(fichier,"%s\n",partie->player->classe[20]);
+        fprintf(fichier,"%d\n",partie->player->position[0]);
+        fprintf(fichier,"%d\n",partie->player->position[1]);
+        fprintf(fichier,"%s\n",partie->player->pseudo);
+        fprintf(fichier,"%s\n",partie->player->classe);
         //map
         /*
         fprintf(fichier,"%s\n",partie->lvl_map);
