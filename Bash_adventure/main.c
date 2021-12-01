@@ -28,6 +28,7 @@ int main()
             //fonction pour supprimer une sauvegarde
             break;
         case 4:
+
             break;
         default:
             printf("Choisissez correctement\n");

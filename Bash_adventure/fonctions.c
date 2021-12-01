@@ -53,7 +53,7 @@ void initGame(Game **partie)
     Joueur *p;
     int i,j;
 
-    j=0;
+    j=1;
     i=(DIMY-1)/2;
 
     Univers *Cosmos1;
@@ -413,7 +413,7 @@ void DeplacementJoueur(Joueur *p,int carte[DIMY][DIMX])
     y=p->position[1];
 
     if((touche==100) && (carte[x][y+1]!=4) && (x+1<DIMX-1)){//122
-        p->position[1]=y+1;
+            p->position[1]=y+1;
 
     }
     if((touche==113) && (carte[x][y-1]!=4) && (y-1>0)){//115
@@ -428,7 +428,7 @@ void DeplacementJoueur(Joueur *p,int carte[DIMY][DIMX])
         printf("%d\n",p->position[0]);
     }
 
-    //system("cls");
+    system("cls");
 
     affichage(carte,p);
 
@@ -525,16 +525,16 @@ void chargement_fichier(Game *partie)
     if (fichier != NULL)
     {
         //perso
-        partie->player->PV=fscanf(fichier,"%d\n",partie->player->PV);
-        partie->player->DEF=fscanf(fichier,"%d\n",partie->player->DEF);
-        partie->player->PM=fscanf(fichier,"%d\n",partie->player->PM);
-        partie->player->LVL=fscanf(fichier,"%d\n",partie->player->LVL);
-        partie->player->XP=fscanf(fichier,"%d\n",partie->player->XP);
-        partie->player->ATK=fscanf(fichier,"%d\n",partie->player->ATK);
-        partie->player->DEF=fscanf(fichier,"%d\n",partie->player->DEF);
-        partie->player->position[2]=fscanf(fichier,"%d\n",partie->player->position[2]);
-        partie->player->pseudo[20]=fscanf(fichier,"%s\n",partie->player->pseudo[20]);
-        partie->player->classe[20]=fscanf(fichier,"%s\n",partie->player->classe[20]);
+        partie->player->PV=fscanf(fichier,"%d\n",&partie->player->PV);
+        partie->player->DEF=fscanf(fichier,"%d\n",&partie->player->DEF);
+        partie->player->PM=fscanf(fichier,"%d\n",&partie->player->PM);
+        partie->player->LVL=fscanf(fichier,"%d\n",&partie->player->LVL);
+        partie->player->XP=fscanf(fichier,"%d\n",&partie->player->XP);
+        partie->player->ATK=fscanf(fichier,"%d\n",&partie->player->ATK);
+        partie->player->DEF=fscanf(fichier,"%d\n",&partie->player->DEF);
+        partie->player->position[2]=fscanf(fichier,"%d\n",&partie->player->position[2]);
+        partie->player->pseudo[20]=fscanf(fichier,"%s\n",&partie->player->pseudo[20]);
+        partie->player->classe[20]=fscanf(fichier,"%s\n",&partie->player->classe[20]);
         //map
         //monstre
 
@@ -597,7 +597,12 @@ void sauvegarde_fichier(Game *partie,Univers *cosmos)
 }
 void libere(Game *partie)
 {
+    free(partie->player);
+    free(partie->Galaxy1);
+    free(partie->Galaxy2);
+    free(partie->Galaxy3);
     free(partie);
+
 }
 
 
