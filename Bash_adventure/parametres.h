@@ -69,7 +69,7 @@ void Combat(Joueur *player,Monstre *ennemi);
 void DeplacementJoueur(Joueur *p,int carte[DIMY][DIMX]);
 void Jeu(Game *p);
 void chargement_fichier();
-void sauvegarde_fichier(Game *partie);
+void sauvegarde_fichier(Game *partie,Univers *cosmos);
 int Test_Key(int *tab);
 
 #endif // PARAMETRES_H_INCLUDED

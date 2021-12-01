@@ -108,7 +108,7 @@ void initCarte(int carte[DIMY][DIMX])
 {
     srand(time(NULL));
 
-    int i,j;
+    int i,j,x,y;
 
 
     for(i=0;i<DIMY;i++){
@@ -137,11 +137,11 @@ void initCarte(int carte[DIMY][DIMX])
 
 
     ///Obstacle aléatoire
-    /*for(i=0;i<20;i++){
+    for(i=0;i<20;i++){
         x=rand() % (DIMX-2 - 3 + 1) + 3;
         y=rand() % (DIMY-2 - 3 + 1) + 3;
-        *(carte[x]+y)=35;
-    }*/
+        carte[x][y]=4;
+    }
 
 
 
@@ -169,6 +169,10 @@ void affichage(int carte[DIMY][DIMX],Joueur *p)
                 if(carte[i][j]==3) printf("%c",32);
 
                 if(carte[i][j]==0) printf("%c",40);
+
+                if(carte[i][j]==4) printf("%c",35);
+
+                if(carte[i][j]==5) printf("%c",77);
             }
 
         }
@@ -365,7 +369,7 @@ void Combat(Joueur *player,Monstre *ennemi)
     printf("Vous êtes en combat, il est l'heure de montrer ce que vous savez faire !\n\n");
 
 
-    while((player->PV!=0)||(ennemi->PV!=0)||(choix!=4)){
+    while((player->PV>0)||(ennemi->PV>0)||(choix!=4)){
 
         printf("Faites votre choix:\n");
         printf("1.Attaquer\n");
@@ -408,19 +412,20 @@ void DeplacementJoueur(Joueur *p,int carte[DIMY][DIMX])
     x=p->position[0];
     y=p->position[1];
 
-    if((touche==122) && (carte[x][y+1]!=35) && (y+1<DIMY-1)){//122
+    if((touche==100) && (carte[x][y+1]!=4) && (x+1<DIMX-1)){//122
         p->position[1]=y+1;
 
     }
-    if((touche==115) && (carte[x][y-1]!=35) && (y-1>0)){//115
+    if((touche==113) && (carte[x][y-1]!=4) && (y-1>0)){//115
         p->position[1]=y-1;
     }
-    if((touche==113) && (carte[x-1][y]!=35) && (x-1>0)){//113
+    if((touche==122) && (carte[x-1][y]!=4) && (x+1>0)){//113
         p->position[0]=x-1;
     }
-    if((touche==100) && (carte[x+1][y]!=35) && (x+1<DIMX-1)){//100
+    if((touche==115) && (carte[x+1][y]!=4) && (y+1<DIMY+1)){//100
         printf("\nun truc marrant et %c",touche);
         p->position[0]=x+1;
+        printf("%d\n",p->position[0]);
     }
 
     //system("cls");
@@ -458,13 +463,16 @@ void Jeu(Game *p)
         }
 
         for(i=0;i<tours;i++){
+            init_monstre(&monstre,Cosmos->level);
+            Cosmos->carte[(DIMY-1)/2][(DIMX-1)/2]=5;
+            affichage(Cosmos->carte,player);
 
-            while(monstre->PV!=0){
+            while(monstre->PV>0){
                 DeplacementJoueur(player,Cosmos->carte);
 
-                /*if(player->prec==monstre->representation){
+                if(player->position[0]==(DIMY-1)/2 && player->position[1]==(DIMX-1)/2){
                     Combat(player,monstre);
-                }*/
+                }
 
                 /*if(player->prec==83){
                     printf("Voulez vous sauvegarder la partie ? 1.Oui 2.Non");
@@ -539,7 +547,7 @@ void chargement_fichier(Game *partie)
         printf("Impossible de sauvegarder");
     }
 }
-void sauvegarde_fichier(Game *partie)
+void sauvegarde_fichier(Game *partie,Univers *cosmos)
 {
     FILE *fichier;
     // Ouverture du fichier en ajout grâce à "a"
@@ -549,6 +557,7 @@ void sauvegarde_fichier(Game *partie)
     {
         // Ecriture
         //perso
+        int i,j;
 
         fprintf(fichier,"%d\n",partie->player->PV);
         fprintf(fichier,"%d\n",partie->player->DEF);
@@ -561,23 +570,20 @@ void sauvegarde_fichier(Game *partie)
         fprintf(fichier,"%d\n",partie->player->position[1]);
         fprintf(fichier,"%s\n",partie->player->pseudo);
         fprintf(fichier,"%s\n",partie->player->classe);
+
         //map
-        /*
-        fprintf(fichier,"%s\n",partie->lvl_map);
-        if(lvl_map==1)
+
+        for(i=0;i<DIMY;i++)
         {
-            fprintf(fichier,"%d",partie->galaxie1);
+            for(j=0;j<DIMX;j++)
+            {
+               fprintf(fichier,"%d",cosmos->carte[i][j]);
+            }
         }
-        if(lvl_map==2)
-        {
-            fprintf(fichier,"%d",partie->galaxie2);
-        }
-        if(lvl_map==3)
-        {
-            fprintf(fichier,"%d",partie->galaxie3);
-        }
-        */
+
+
         //monstre
+
 
 
         // Fermeture du fichier
