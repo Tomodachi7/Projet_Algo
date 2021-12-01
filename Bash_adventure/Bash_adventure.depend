@@ -73,7 +73,11 @@
 	<string.h>
 	<time.h>
 
+<<<<<<< HEAD
 1638395842 source:c:\users\will\desktop\projet_algo\bash_adventure\fonctions.c
+=======
+1638392452 source:c:\users\will\desktop\projet_algo\bash_adventure\fonctions.c
+>>>>>>> 1e681a3368cc6ca04331f8c708296934278622e1
 	"parametres.h"
 	<stddef.h>
 	<stdio.h>
@@ -81,7 +85,11 @@
 	<string.h>
 	<time.h>
 
+<<<<<<< HEAD
 1638397398 c:\users\will\desktop\projet_algo\bash_adventure\parametres.h
+=======
+1638325284 c:\users\will\desktop\projet_algo\bash_adventure\parametres.h
+>>>>>>> 1e681a3368cc6ca04331f8c708296934278622e1
 	<stddef.h>
 	<stdio.h>
 	<string.h>

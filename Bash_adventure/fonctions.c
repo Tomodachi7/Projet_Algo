@@ -412,6 +412,7 @@ void DeplacementJoueur(Joueur *p,int carte[DIMY][DIMX])
     x=p->position[0];
     y=p->position[1];
 
+<<<<<<< HEAD
     if((touche==100) && (carte[x][y+1]!=4) && (x+1<DIMX-1)){//122
         p->position[1]=y+1;
 
@@ -423,6 +424,19 @@ void DeplacementJoueur(Joueur *p,int carte[DIMY][DIMX])
         p->position[0]=x-1;
     }
     if((touche==115) && (carte[x+1][y]!=4) && (y+1<DIMY+1)){//100
+=======
+    if((touche==100) && (carte[x][y+1]!=35) && (x+1<DIMX-1)){//122
+        p->position[1]=y+1;
+
+    }
+    if((touche==113) && (carte[x][y-1]!=35) && (y-1>0)){//115
+        p->position[1]=y-1;
+    }
+    if((touche==122) && (carte[x-1][y]!=35) && (x-1>0)){//113
+        p->position[0]=x-1;
+    }
+    if((touche==115) && (carte[x+1][y]!=35) && (x+1<DIMX-1)){//100
+>>>>>>> 1e681a3368cc6ca04331f8c708296934278622e1
         printf("\nun truc marrant et %c",touche);
         p->position[0]=x+1;
         printf("%d\n",p->position[0]);
