@@ -62,114 +62,115 @@ void initGame(Game **partie)
 
     *partie=(Game*)malloc_p(sizeof(Game));
 
-    ///Dieu dit : « Faisons l’homme à notre image, selon notre ressemblance»
     p=(*partie)->player;
     initJoueur(&p);
 
-    printf("un truc marrant");
+
 
     Cosmos1=(Univers*)malloc_p(sizeof(Univers));
     Cosmos2=(Univers*)malloc_p(sizeof(Univers));
     Cosmos3=(Univers*)malloc_p(sizeof(Univers));
 
-    printf("un truc marrant");
 
     (*partie)->Galaxy1=Cosmos1;
     (*partie)->Galaxy2=Cosmos2;
     (*partie)->Galaxy3=Cosmos3;
 
-    printf("un truc marrant");
 
     Cosmos1->level=1;
     Cosmos2->level=2;
     Cosmos3->level=3;
 
-    printf("un truc marrant");
+
 
     (*partie)->time=0;
 
     p->position[0]=i;
     p->position[1]=j;
 
-    ///AU COMMENCEMENT, Dieu créa le ciel et la terre.
-    Creation_map(Cosmos1->carte);
-    Creation_map(Cosmos2->carte);
-    Creation_map(Cosmos3->carte);
 
-    printf("un truc marrant");
-
-    ///Dieu dit : « Que la lumière soit. » Et la lumière fut.» ("Bon là c'est pas vraiment éclairé vu qu'on voit rien, mais bon...")
     initCarte(Cosmos1->carte);
 
-    printf("un truc marrant");
+
 
     ///Trou de vers
     Cosmos1->suivante=Cosmos2;
     Cosmos2->suivante=Cosmos3;
     Cosmos3->suivante=NULL;
 
-    printf("un truc marrant");
 
-    ///placement du joueur
-    Cosmos1->carte[i][j+1]=42;
 
-    affichage(Cosmos1->carte);
-    printf("un truc marrant");
-}
-
-void Creation_map(int **carte)
-{
-    int i;
-
-    for(i=0;i<DIMY;i++){
-        carte[i]=(int*)malloc_p(DIMX*sizeof(int));
-    }
+    affichage(Cosmos1->carte,p);
 
 }
 
-void initCarte(int **carte)
+void initCarte(int carte[DIMY][DIMX])
 {
     srand(time(NULL));
 
-    int i,j,x,y;
+    int i,j;
+
 
     for(i=0;i<DIMY;i++){
         for(j=0;j<DIMX;j++){
-            carte[i][j]=32;
+            carte[i][j]=3;
         }
     }
 
+
     ///Murs Horizontales
     for(i=0;i<DIMX;i++){
-        carte[0][i]=45;
-        carte[DIMY-1][i]=45;
+        carte[0][i]=1;
+        carte[DIMY-1][i]=1;
     }
+
+
     ///Murs verticales
     for(i=1;i<DIMY-1;i++){
-        carte[i][DIMX-1]=124;
-        carte[i][0]=124;
+        carte[i][DIMX-1]=2;
+        carte[i][0]=2;
     }
+
 
     ///placement de la porte
-    carte[(DIMY-1)/2][DIMX-1]=40;
+    carte[(DIMY-1)/2][DIMX-1]=0;
+
 
     ///Obstacle aléatoire
-    for(i=0;i<20;i++){
+    /*for(i=0;i<20;i++){
         x=rand() % (DIMX-2 - 3 + 1) + 3;
         y=rand() % (DIMY-2 - 3 + 1) + 3;
-        carte[x][y]=35;
-    }
+        *(carte[x]+y)=35;
+    }*/
+
 
 
 }
 
-void affichage(int **carte)
+void affichage(int carte[DIMY][DIMX],Joueur *p)
 {
-    int i,j;
+    int i,j,x,y;
+
+    x=p->position[0];
+    y=p->position[1];
 
     for(i=0;i<DIMY;i++){
         for(j=0;j<DIMX;j++){
-            printf("%c",carte[i][j]);
+
+
+            if((i==x)&&(j==y)) printf("%c",42);
+
+            else{
+
+                if(carte[i][j]==1) printf("%c",45);
+
+                if(carte[i][j]==2) printf("%c",124);
+
+                if(carte[i][j]==3) printf("%c",32);
+
+                if(carte[i][j]==0) printf("%c",40);
+            }
+
         }
         printf("\n");
     }
@@ -221,9 +222,9 @@ void initJoueur(Joueur **p){
     scanf("%d",&sexe);
 
     (*p)->sexe=sexe;
-    (*p)->prec=32;
     (*p)->portefeuille=100;
 
+    ///Le début des emmerdes
     purgeSTDIN();
     printf("Saisir votre pseudo de joueur\n");
     fgets((*p)->pseudo,20,stdin);
@@ -310,7 +311,7 @@ void init_monstre(Monstre **self,int nv_map)
     (*self)->position[1]=j;
 }
 
-void deplament_monstre(int **carte,Monstre *monstre)
+/*void deplament_monstre(int **carte,Monstre *monstre)
 {
     srand( time( NULL ) );
 
@@ -355,7 +356,7 @@ void deplament_monstre(int **carte,Monstre *monstre)
                 carte[x][y-1]=monstre->representation;
             }
         }
-}
+}*/
 
 void Combat(Joueur *player,Monstre *ennemi)
 {
@@ -396,7 +397,7 @@ void Combat(Joueur *player,Monstre *ennemi)
 }
 
 
-void DeplacementJoueur(Joueur *p,int **carte)
+void DeplacementJoueur(Joueur *p,int carte[DIMY][DIMX])
 {
     int x,y;
     char touche;
@@ -408,28 +409,29 @@ void DeplacementJoueur(Joueur *p,int **carte)
     y=p->position[1];
 
     if((touche==122) && (carte[x][y+1]!=35) && (y+1<DIMY-1)){//122
-        carte[x][y]=p->prec;
-        p->prec=carte[x][y+1];
-        carte[x][y+1]=42;
+        p->position[1]=y+1;
+
     }
     if((touche==115) && (carte[x][y-1]!=35) && (y-1>0)){//115
-        carte[x][y]=p->prec;
-        p->prec=carte[x][y-1];
-        carte[x][y-1]=42;
+        p->position[1]=y-1;
     }
     if((touche==113) && (carte[x-1][y]!=35) && (x-1>0)){//113
-        carte[x][y]=p->prec;
-        p->prec=carte[x-1][y];
-        carte[x-1][y]=42;
+        p->position[0]=x-1;
     }
     if((touche==100) && (carte[x+1][y]!=35) && (x+1<DIMX-1)){//100
-        carte[x][y]=p->prec;
-        p->prec=carte[x+1][y];
-        carte[x+1][y]=42;
+        printf("\nun truc marrant et %c",touche);
+        p->position[0]=x+1;
     }
-    system("cls");
-    affichage(carte);
+
+    //system("cls");
+
+    affichage(carte,p);
+
+    printf("\nun truc marrant et %c",touche);
+
 }
+
+
 void Jeu(Game *p)
 {
     int continuer,i,fin,tours,ind,x,y,choix,s;
@@ -442,7 +444,7 @@ void Jeu(Game *p)
     continuer=1;
     fin=0;
 
-    while(fin){
+    while(fin==0){
         if(Cosmos->level==1){
         tours=3;
         }
@@ -456,43 +458,42 @@ void Jeu(Game *p)
         }
 
         for(i=0;i<tours;i++){
-            ///Et Dieu dit : « Que la terre produise des êtres vivants selon leur espèce, bestiaux, bestioles et bêtes sauvages selon leur espèce. »
-            init_monstre(&monstre,1);
-        }
 
-        while(continuer==1){
-            DeplacementJoueur(player,Cosmos->carte);
+            while(monstre->PV!=0){
+                DeplacementJoueur(player,Cosmos->carte);
 
-            if(player->prec==monstre->representation){
-                Combat(player,monstre);
-            }
+                /*if(player->prec==monstre->representation){
+                    Combat(player,monstre);
+                }*/
 
-            if(player->prec==83){
-                printf("Voulez vous sauvegarder la partie ? 1.Oui 2.Non");
-                scanf("%d",&s);
-                if(s==1) sauvegarde_fichier(p);
-            }
-
-            if(player->prec==40){
-                ind=Test_Key(player->sacado);
-                if(ind==-1){
-                    printf("Vous n'avez pas la cle, revenez quand vous l'aurez malotru !");
-                    x=player->position[0];
-                    y=player->position[1];
-                    Cosmos->carte[x][y]=player->prec;
-                    player->prec=Cosmos->carte[x-1][y];
-                    Cosmos->carte[x-1][y]=42;
-                }
-                else{
-                    printf("Voulez vous passez au niveau suivant ?\n");
-                    printf("1.Oui  2.Non\n");
-                    scanf("%d",&choix);
+                /*if(player->prec==83){
+                    printf("Voulez vous sauvegarder la partie ? 1.Oui 2.Non");
+                    scanf("%d",&s);
+                    if(s==1) sauvegarde_fichier(p);
                 }
 
+                if(player->prec==40){
+                    ind=Test_Key(player->sacado);
+                    if(ind==-1){
+                        printf("Vous n avez pas la cle, revenez quand vous l aurez malotru !");
+                        x=player->position[0];
+                        y=player->position[1];
+                        Cosmos->carte[x][y]=player->prec;
+                        player->prec=Cosmos->carte[x-1][y];
+                        Cosmos->carte[x-1][y]=42;
+                    }
+                    else{
+                        printf("Voulez vous passez au niveau suivant ?\n");
+                        printf("1.Oui  2.Non\n");
+                        scanf("%d",&choix);
+                    }*/
+
+                }
+
+                if(choix==1) break;
             }
 
-            if(choix==1) break;
-        }
+        choix=0;
 
         Cosmos=Cosmos->suivante;
         initCarte(Cosmos->carte);
@@ -500,7 +501,7 @@ void Jeu(Game *p)
         if(Cosmos==NULL) fin=1;
     }
 
-    printf("Aah enfin vous voilà...\n");
+    printf("Aah enfin vous voilà___\n");
     printf("L'aventure fut rempli de nombreux obstacles mais vous avez su relever le defi.\nSoyez fière de vous jeune aventurier, mais votre histoire ne s'arrête pas ici petit scarabe !\n");
     printf("Il vous reste encore d'autres mondes a decouvrir, que la force soit avec vous !");
 
@@ -516,14 +517,12 @@ void chargement_fichier(Game *partie)
     if (fichier != NULL)
     {
         //perso
-        partie->player->prec=fscanf(fichier,"%d\n",&partie->player->prec);
         partie->player->PV=fscanf(fichier,"%d\n",partie->player->PV);
         partie->player->DEF=fscanf(fichier,"%d\n",partie->player->DEF);
         partie->player->PM=fscanf(fichier,"%d\n",partie->player->PM);
         partie->player->LVL=fscanf(fichier,"%d\n",partie->player->LVL);
         partie->player->XP=fscanf(fichier,"%d\n",partie->player->XP);
         partie->player->ATK=fscanf(fichier,"%d\n",partie->player->ATK);
-        partie->player->VIT=fscanf(fichier,"%d\n",partie->player->VIT);
         partie->player->DEF=fscanf(fichier,"%d\n",partie->player->DEF);
         partie->player->position[2]=fscanf(fichier,"%d\n",partie->player->position[2]);
         partie->player->pseudo[20]=fscanf(fichier,"%s\n",partie->player->pseudo[20]);
@@ -550,14 +549,13 @@ void sauvegarde_fichier(Game *partie)
     {
         // Ecriture
         //perso
-        fprintf(fichier,"%d\n",partie->player->prec);
+
         fprintf(fichier,"%d\n",partie->player->PV);
         fprintf(fichier,"%d\n",partie->player->DEF);
         fprintf(fichier,"%d\n",partie->player->PM);
         fprintf(fichier,"%d\n",partie->player->LVL);
         fprintf(fichier,"%d\n",partie->player->XP);
         fprintf(fichier,"%d\n",partie->player->ATK);
-        fprintf(fichier,"%d\n",partie->player->VIT);
         fprintf(fichier,"%d\n",partie->player->DEF);
         fprintf(fichier,"%d\n",partie->player->position[0]);
         fprintf(fichier,"%d\n",partie->player->position[1]);

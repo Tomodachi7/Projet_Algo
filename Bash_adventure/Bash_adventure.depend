@@ -35,13 +35,14 @@
 
 1637269360 d:\users\ludovic\desktop\bash_adventure\parametres.h
 
-1637955734 source:d:\users\ludovic\documents\miage\algo et prog\projet bash adventure\jeu\bash_adventure\main.c
+1638309756 source:d:\users\ludovic\documents\miage\algo et prog\projet bash adventure\jeu\bash_adventure\main.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 	<time.h>
 	"parametres.h"
 
-1638052709 d:\users\ludovic\documents\miage\algo et prog\projet bash adventure\jeu\bash_adventure\parametres.h
+1638317563 d:\users\ludovic\documents\miage\algo et prog\projet bash adventure\jeu\bash_adventure\parametres.h
 	<stddef.h>
 	<stdio.h>
 	<string.h>
@@ -56,7 +57,7 @@
 	<string.h>
 	<time.h>
 
-1638042724 source:d:\users\ludovic\documents\miage\algo et prog\projet bash adventure\jeu\bash_adventure\fonctions.c
+1638318518 source:d:\users\ludovic\documents\miage\algo et prog\projet bash adventure\jeu\bash_adventure\fonctions.c
 	"parametres.h"
 	<stddef.h>
 	<stdio.h>
