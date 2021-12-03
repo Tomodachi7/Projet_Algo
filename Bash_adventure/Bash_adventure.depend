@@ -95,3 +95,47 @@
 	<time.h>
 	"parametres.h"
 
+1638401836 source:d:\users\ludovic\desktop\warning !!!\projet_algo\bash_adventure\fonctions.c
+	"parametres.h"
+	<stddef.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1638481622 d:\users\ludovic\desktop\warning !!!\projet_algo\bash_adventure\parametres.h
+	<stddef.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<time.h>
+
+1638484930 source:d:\users\ludovic\desktop\warning !!!\projet_algo\bash_adventure\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"parametres.h"
+
+1638493085 source:c:\users\will\desktop\nouveau dossier (4)\v2\bash_adventure\fonctions.c
+	"parametres.h"
+	<stddef.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1638492386 c:\users\will\desktop\nouveau dossier (4)\v2\bash_adventure\parametres.h
+	<stddef.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<time.h>
+
+1638484930 source:c:\users\will\desktop\nouveau dossier (4)\v2\bash_adventure\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"parametres.h"
+

@@ -49,11 +49,8 @@ struct Monstre{
 int representation;
 char nom[20];
 int PV;
-int PM;
 int XP;
 int ATK;
-int VIT;
-int position[2];
 };
 
 void* malloc_p(size_t s);
@@ -65,11 +62,13 @@ void DistributeurCapa(Joueur **p,int val);
 void initJoueur(Joueur **p);
 void init_monstre(Monstre **self,int nv_map);
 //void deplament_monstre(int **carte,Monstre *monstre);
-void Combat(Joueur *player,Monstre *ennemi);
+void Combat(int carte[DIMY][DIMX],Joueur *player,Monstre *ennemi);
 void DeplacementJoueur(Joueur *p,int carte[DIMY][DIMX]);
 void Jeu(Game *p);
 void chargement_fichier();
 void sauvegarde_fichier(Game *partie,Univers *cosmos);
 int Test_Key(int *tab);
+void recolte(int carte[DIMY][DIMX],Joueur *player);
+int Test_sac(int sac[]);
 
 #endif // PARAMETRES_H_INCLUDED

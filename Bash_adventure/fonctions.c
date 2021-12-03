@@ -16,8 +16,8 @@ void* malloc_p(size_t s)
 }
 
 void purgeSTDIN(){
-char ch;
-while ((ch = getchar()) != '\n' && ch != EOF);
+    char ch;
+    while ((ch = getchar()) != '\n' && ch != EOF);
 }
 
 int Menu()
@@ -143,6 +143,12 @@ void initCarte(int carte[DIMY][DIMX])
         carte[x][y]=4;
     }
 
+    ///drop objet
+    carte[19][7]=6;
+    carte[17][21]=7;
+    carte[1][27]=9;
+    carte[15][40]=8;
+
 
 
 }
@@ -153,6 +159,8 @@ void affichage(int carte[DIMY][DIMX],Joueur *p)
 
     x=p->position[0];
     y=p->position[1];
+
+    system("cls");
 
     for(i=0;i<DIMY;i++){
         for(j=0;j<DIMX;j++){
@@ -173,6 +181,14 @@ void affichage(int carte[DIMY][DIMX],Joueur *p)
                 if(carte[i][j]==4) printf("%c",35);
 
                 if(carte[i][j]==5) printf("%c",77);
+
+                if(carte[i][j]==6) printf("%c",105);
+
+                if(carte[i][j]==7) printf("%c",104);
+
+                if(carte[i][j]==8) printf("%c",112);
+
+                if(carte[i][j]==9) printf("%c",119);
             }
 
         }
@@ -184,7 +200,7 @@ void DistributeurCapa(Joueur **p,int val)
 {
   if(val==1){
     (*p)->LVL=1;
-    (*p)->PV=100;
+    (*p)->PV=300;
     (*p)->PM=0;
     (*p)->DEF=20;
     (*p)->XP=0;
@@ -192,15 +208,15 @@ void DistributeurCapa(Joueur **p,int val)
   }
   if(val==2){
     (*p)->LVL=1;
-    (*p)->PV=100;
-    (*p)->PM=6;
+    (*p)->PV=200;
+    (*p)->PM=100;
     (*p)->DEF=10;
     (*p)->XP=0;
     (*p)->ATK=10;
   }
   if(val==3){
-    (*p)->LVL=150;
-    (*p)->PV=5;
+    (*p)->LVL=1;
+    (*p)->PV=400;
     (*p)->PM=0;
     (*p)->DEF=40;
     (*p)->XP=0;
@@ -208,9 +224,9 @@ void DistributeurCapa(Joueur **p,int val)
   }
   if(val==4){
     (*p)->LVL=1;
-    (*p)->PV=200;
+    (*p)->PV=500;
     (*p)->PM=0;
-    (*p)->DEF=55;
+    (*p)->DEF=60;
     (*p)->XP=0;
     (*p)->ATK=20;
   }
@@ -219,11 +235,14 @@ void DistributeurCapa(Joueur **p,int val)
 void initJoueur(Joueur **p){
     *p=(Joueur*)malloc_p(sizeof(Joueur));
 
-    int choix;
-    int sexe;
+    int choix,sexe,i;
 
     printf("Choisissez votre genre: 1.Male alpha 2.Femme\n");
     scanf("%d",&sexe);
+
+    for(i=0;i<TAILLE_SAC;i++){
+        (*p)->sacado[i]=0;
+    }
 
     (*p)->sexe=sexe;
     (*p)->portefeuille=100;
@@ -235,8 +254,8 @@ void initJoueur(Joueur **p){
 
     printf("Choisissez votre classe parmi celles-ci\n");
     printf("1.Archer\n");
-    printf("2.Mage\n");
-    printf("3.Chevalier\n");
+    printf("2.Caster\n");
+    printf("3.Knight\n");
     printf("4.Vanguard\n");
 
     scanf("%d",&choix);
@@ -261,15 +280,13 @@ void init_monstre(Monstre **self,int nv_map)
 {
     srand(time(NULL));
 
-    int x,i,j,PV,XP,ATK;
+    int x,PV,XP,ATK;
+
+    x=rand()%3;
 
     char *t[]={"zombie" , "slime", "dragon"};
 
     *self=malloc_p(sizeof(Monstre));
-
-    x=rand()%3;
-    i=rand()%(DIMX-1)+1;
-    j=rand()%(DIMY-1)+1;
 
     if(nv_map==1){
         PV=0;
@@ -295,6 +312,7 @@ void init_monstre(Monstre **self,int nv_map)
         (*self)->PV=100+PV;
         (*self)->XP=XP;
         (*self)->ATK=7*ATK;
+        strcpy((*self)->nom,t[x]);
     }
     if (strcmp(t[x],"slime"))
     {
@@ -302,6 +320,7 @@ void init_monstre(Monstre **self,int nv_map)
         (*self)->PV=50;
         (*self)->XP=XP;
         (*self)->ATK=1*ATK;
+        strcpy((*self)->nom,t[x]);
     }
     if (strcmp(t[x],"dragon"))
     {
@@ -309,10 +328,8 @@ void init_monstre(Monstre **self,int nv_map)
         (*self)->PV=200+PV;
         (*self)->XP=XP;
         (*self)->ATK=10*ATK;
+        strcpy((*self)->nom,t[x]);
     }
-
-    (*self)->position[0]=i;
-    (*self)->position[1]=j;
 }
 
 /*void deplament_monstre(int **carte,Monstre *monstre)
@@ -362,14 +379,23 @@ void init_monstre(Monstre **self,int nv_map)
         }
 }*/
 
-void Combat(Joueur *player,Monstre *ennemi)
+void Combat(int carte[DIMY][DIMX],Joueur *player,Monstre *ennemi)
 {
     int choix=0;
+    int tours=0;
 
-    printf("Vous êtes en combat, il est l'heure de montrer ce que vous savez faire !\n\n");
+    system("cls");
 
+    printf("Vous etes en combat, il est l'heure de montrer ce que vous savez faire !\n\n");
 
-    while((player->PV>0)||(ennemi->PV>0)||(choix!=4)){
+    sleep(2);
+
+    while( ((player->PV > 0) && (ennemi->PV > 0)) || (choix!=4) ){
+
+        printf("%s : %d PV\n",player->pseudo,player->PV);
+        printf("XP : %d\n",player->XP);
+        printf("\n");
+        printf("%s : %d PV\n",ennemi->nom,ennemi->PV);
 
         printf("Faites votre choix:\n");
         printf("1.Attaquer\n");
@@ -382,12 +408,25 @@ void Combat(Joueur *player,Monstre *ennemi)
         switch(choix)
         {
             case 1:
-                printf("Quelle type d'attaque voulez vous utiliser\n");
-                printf("Attaque physique\n");
-                printf("Attaque magique\n");
+                if(strcmp(player->classe,"Archer")==0){
+                    if(tours%4==0) ennemi->PV=ennemi->PV - 2*player->ATK;
+                    else ennemi->PV=ennemi->PV - player->ATK;
+
+                }
+
+                if(strcmp(player->classe,"Caster")==0){
+                        if(tours>0) ennemi->PV=ennemi->PV - tours*player->ATK;
+                        else ennemi->PV=ennemi->PV - player->ATK;
+                }
+
+                if(strcmp(player->classe,"Knight")==0) ennemi->PV=ennemi->PV - player->ATK;
+
+                if(strcmp(player->classe,"Vanguard")==0) ennemi->PV=ennemi->PV - player->ATK;
+
                 break;
             case 2:
-                printf("Vous avez decide de vous defendre");
+                printf("Vous avez decide de vous defendre\n");
+                player->PV=player->PV+(ennemi->ATK/player->DEF);
                 break;
             case 3:
                 printf("Ouverture inventaire");
@@ -397,6 +436,23 @@ void Combat(Joueur *player,Monstre *ennemi)
                 break;
 
         }
+
+        if(tours%3==0 && strcmp(player->classe,"Chevalier")==0) printf("Vous avez bloque une attaque");
+        else player->PV=player->PV - ennemi->ATK;
+
+        tours+=1;
+
+    }
+
+    if(player->PV<=0){
+        printf("L aventure s'arrete malheureusement ici pour vous petit, j avais pourtant prevu de grands dessein pour vous jeune ame egaree... ");
+    }
+
+    if(ennemi->PV<=0){
+        printf("Bien joue, Jeune aventurier !");
+        carte[(DIMY-1)/2][(DIMX-1)/2]=0;
+        player->XP=player->XP+ennemi->XP;
+
     }
 }
 
@@ -423,30 +479,25 @@ void DeplacementJoueur(Joueur *p,int carte[DIMY][DIMX])
         p->position[0]=x-1;
     }
     if((touche==115) && (carte[x+1][y]!=4) && (y+1<DIMY+1)){//100
-        printf("\nun truc marrant et %c",touche);
         p->position[0]=x+1;
-        printf("%d\n",p->position[0]);
     }
 
     system("cls");
 
     affichage(carte,p);
 
-    printf("\nun truc marrant et %c",touche);
-
 }
 
 
 void Jeu(Game *p)
 {
-    int continuer,i,fin,tours,ind,x,y,choix,s;
+    int i,fin,tours,ind,choix;
     Joueur *player;
     Monstre *monstre;
     Univers *Cosmos;
 
     Cosmos=p->Galaxy1;
     player=p->player;
-    continuer=1;
     fin=0;
 
     while(fin==0){
@@ -468,49 +519,59 @@ void Jeu(Game *p)
             affichage(Cosmos->carte,player);
 
             while(monstre->PV>0){
+
                 DeplacementJoueur(player,Cosmos->carte);
+                if(player->position[0]==19 && player->position[1]==7){
+                    recolte(Cosmos->carte,player);
+                    affichage(Cosmos->carte,player);}
+
+                if(player->position[0]==17 && player->position[1]==21){
+                    recolte(Cosmos->carte,player);
+                    affichage(Cosmos->carte,player);}
+
+                if(player->position[0]==1 && player->position[1]==27){
+                    recolte(Cosmos->carte,player);
+                    affichage(Cosmos->carte,player);}
+
+                if(player->position[0]==15 && player->position[1]==40){
+                    recolte(Cosmos->carte,player);
+                    affichage(Cosmos->carte,player);}
 
                 if(player->position[0]==(DIMY-1)/2 && player->position[1]==(DIMX-1)/2){
-                    Combat(player,monstre);
+                    Combat(Cosmos->carte,player,monstre);
                 }
 
-                /*if(player->prec==83){
-                    printf("Voulez vous sauvegarder la partie ? 1.Oui 2.Non");
-                    scanf("%d",&s);
-                    if(s==1) sauvegarde_fichier(p);
-                }
-
-                if(player->prec==40){
+                if(player->position[0]==(DIMY-1)/2 && player->position[1]==DIMX-1){
                     ind=Test_Key(player->sacado);
                     if(ind==-1){
                         printf("Vous n avez pas la cle, revenez quand vous l aurez malotru !");
-                        x=player->position[0];
-                        y=player->position[1];
-                        Cosmos->carte[x][y]=player->prec;
-                        player->prec=Cosmos->carte[x-1][y];
-                        Cosmos->carte[x-1][y]=42;
+                        player->position[1]=player->position[1]-1;
+                        affichage(Cosmos->carte,player);
                     }
                     else{
                         printf("Voulez vous passez au niveau suivant ?\n");
                         printf("1.Oui  2.Non\n");
                         scanf("%d",&choix);
-                    }*/
+                    }
 
                 }
 
                 if(choix==1) break;
+
             }
+        }
 
         choix=0;
 
         Cosmos=Cosmos->suivante;
         initCarte(Cosmos->carte);
+        sauvegarde_fichier(p,Cosmos);
 
         if(Cosmos==NULL) fin=1;
     }
 
-    printf("Aah enfin vous voilà___\n");
-    printf("L'aventure fut rempli de nombreux obstacles mais vous avez su relever le defi.\nSoyez fière de vous jeune aventurier, mais votre histoire ne s'arrête pas ici petit scarabe !\n");
+    printf("Aah enfin vous voila...\n");
+    printf("L'aventure fut rempli de nombreux obstacles mais vous avez su relever le defi.\nSoyez fiere de vous jeune aventurier, mais votre histoire ne s'arrete pas ici petit scarabe !\n");
     printf("Il vous reste encore d'autres mondes a decouvrir, que la force soit avec vous !");
 
 }
@@ -606,8 +667,10 @@ void libere(Game *partie)
 }
 
 
-int Test_Key(int *tab){
+int Test_Key(int tab[])
+{
     int i;
+
     int VerifKey=-1;
 
     for(i=0;i<TAILLE_SAC;i++){
@@ -622,5 +685,75 @@ int Test_Key(int *tab){
     else{
       printf("Vous resterez coincés encore dans ce donjon");
     }
+
     return VerifKey;
+}
+
+int Test_sac(int sac[])
+{
+    int i=1;
+
+    while(sac[i]!=0 && i<TAILLE_SAC+1){
+        i++;
+    }
+
+    if(i>TAILLE_SAC){
+        printf("le sac est plein");
+        return -1;
+    }
+    else return i;
+}
+
+void recolte(int carte[DIMY][DIMX],Joueur *player)
+{
+    int x,y,choix,i;
+    x=player->position[0];
+    y=player->position[1];
+    if(carte[x][y]==6)
+    {
+        printf("voulez vous prendre l'objet ? \n 1:oui 2:non\n");
+        scanf("%d",&choix);
+        if (choix==1)
+        {
+            i=Test_sac(player->sacado);
+            if(i!=-1)player->sacado[i]=105;
+            carte[x][y]=3;
+        }
+    }
+    if(carte[x][y]==7)
+    {
+        printf("voulez vous prendre l'objet ? \n 1:oui 2:non\n");
+        scanf("%d",&choix);
+        if (choix==1)
+        {
+            i=Test_sac(player->sacado);
+            if(i!=-1)player->sacado[i]=104;
+            carte[x][y]=3;
+            system("cls");
+        }
+    }
+    if(carte[x][y]==8)
+    {
+        printf("voulez vous prendre l'objet ? \n 1:oui 2:non\n");
+        scanf("%d",&choix);
+        if (choix==1)
+        {
+            i=Test_sac(player->sacado);
+            if(i!=-1)player->sacado[i]=112;
+            carte[x][y]=3;
+            system("cls");
+        }
+    }
+    if(carte[x][y]==9)
+    {
+        printf("voulez vous prendre l'objet ? \n 1:oui 2:non\n");
+        scanf("%d",&choix);
+        if (choix==1)
+        {
+            i=Test_sac(player->sacado);
+            if(i!=-1)player->sacado[i]=119;
+            carte[x][y]=3;
+            system("cls");
+        }
+    }
 }

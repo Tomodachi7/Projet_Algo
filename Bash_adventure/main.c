@@ -18,7 +18,6 @@ int main()
         {
         case 1:
             initGame(&partie);
-            printf("podd\n");
             Jeu(partie);
             break;
         case 2:
